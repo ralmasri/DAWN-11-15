@@ -72,8 +72,7 @@ public enum StringList {
     /**
      * Part of an error message if the coordinates are not in the correct format.
      */
-    COORDINATES_CORRECT_FORMAT(" Only coordinates in the correct format "
-                    + "are accepted."),
+    COORDINATES_CORRECT_FORMAT(" The error could be either syntactical or semantical."),
     
     /**
      * Error message if the coordinates the user input are not correct.

@@ -453,12 +453,12 @@ public class DawnGame {
         return currentpiecelength;
     }
    
-    public void setRolled(boolean b) {
-        this.hasrolled = b;
+    public void setRolled(boolean bool) {
+        this.hasrolled = bool;
     }
     
-    public void setPlaced(boolean b) {
-        this.hasplaced = b;
+    public void setPlaced(boolean bool) {
+        this.hasplaced = bool;
     }
     
 }
