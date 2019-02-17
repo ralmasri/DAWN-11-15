@@ -28,8 +28,19 @@ public class Main {
         final DawnGame game = new DawnGame();
         final List<CommandInterface> commands = Main.initializeAllCommands(game);
         for (String input = Terminal.readLine(); !input.equals("quit"); input = Terminal.readLine()) {
+            String temp = input;
+            int countSpaces = input.length() - temp.replace(" ", "").length();
             final String[] inputArray = input.split(StringList.COMMAND_SEPARATOR.toString());
             try {
+                if (countSpaces > 1) {
+                    throw new InvalidInputException("a white space is only allowed "
+                            + "between the command and the paramters.");
+                }
+                if (countSpaces > 0 && (!inputArray[0].equals("print") 
+                        || !inputArray[0].equals("reset")
+                        || !inputArray[0].equals("show-result"))) {
+                    throw new InvalidInputException(" you cannot type any spaces for this command.");
+                }
                 final CommandInterface command = commands.stream()
                         .filter(c -> c.getNameofCommand().equals(inputArray[0]))
                         .findAny()
