@@ -31,15 +31,21 @@ public class Cell {
     private Piece piece;
     
     /**
-     * Constructor for a cell when no piece is on it.
+     * Neighboring cells.
      */
+    
     private final LinkedList<Cell> neighborCells;
     
+    /**
+     * Constructor for a cell when no piece is on it.
+     * @param mcomponent The m-component.
+     * @param ncomponent The n-component.
+     */
     
-    public Cell(int mcoordinate, int ncoordinate) {
+    public Cell(int mcomponent, int ncomponent) {
         this.piece = null;
-        this.mcoordinate = mcoordinate;
-        this.ncoordinate = ncoordinate;
+        this.mcoordinate = mcomponent;
+        this.ncoordinate = ncomponent;
         this.neighborCells = new LinkedList<>();
      }
     
@@ -88,15 +94,25 @@ public class Cell {
         return piece != null;
     }
     
+    /**
+     * Adds a neighboring cell.
+     * @param cell The neighboring cell.
+     */
     public void addNeighborCell(Cell cell) {
         neighborCells.add(cell);
     }
     
-    public LinkedList<Cell> getNeighbors(){
+    /**
+     * Gets neighboring cells.
+     * @return The neighboring cells.
+     */
+    
+    public LinkedList<Cell> getNeighbors() {
         return neighborCells;
     }
+    
     /**
-     * Textual representation of a cell as a grid.
+     * Textual representation of a cell.
      */
     
     @Override

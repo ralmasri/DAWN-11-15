@@ -19,7 +19,6 @@ import edu.kit.informatik.util.StringList;
  * @author Rakan Zeid Al Masri
  * @version 1.0
  */
-
 public class DawnGame {
 
     private static final int BOARD_HEIGHT = 11;
@@ -36,11 +35,16 @@ public class DawnGame {
     private Queue<GameStage> stages;
     private List<GameStage> finishedstages;
     
-    
+    /**
+     * Constructor for a game and all its components.
+     */
     public DawnGame() {
         reset();
     }
-        
+    
+    /**
+     * Initializes all parts of the game and is also used to start a new game.
+     */
     public void reset() {
         this.board = new Board(BOARD_HEIGHT, BOARD_WIDTH);
         Piece two = new Piece(2);
@@ -67,27 +71,50 @@ public class DawnGame {
         this.hasrolled = false;
         this.hasplaced = false;
     }
-    public String state(int mcoordinate, int ncoordinate) throws InvalidInputException {
-        Cell cell = board.getCell(mcoordinate, ncoordinate);
-        if(cell == null) {
+    
+    /**
+     * Returns a symbol based on the what is on the cell.
+     * @param mcomponent The m-component of the cell.
+     * @param ncomponent The n-component of the cell.
+     * @return  '-' if the cell is empty, 'V' for Vesta, 'C' for Ceres or '+' if a Mission Control piece
+     * is on the cell.
+     * @throws InvalidInputException If the coordinates are not on the board.
+     */
+    public String state(int mcomponent, int ncomponent) throws InvalidInputException {
+        Cell cell = board.getCell(mcomponent, ncomponent);
+        if (cell == null) {
             throwInvalidCoordinate("");
         }
         return cell.toString();
     }
     
+    /**
+     * Prints the board as a grid.
+     * @return Textual representation of the board.
+     */
     public String print() {
         return board.toString();
     }
     
-    public String setVC(int mcoordinate, int ncoordinate) throws InvalidInputException, GameMechanicException {
-        if(getCurrentGameStage().isVCPlaced()) {
-            throw new GameMechanicException(getCurrentGameStage().getNaturePiece().getName() + " has already been placed.");
+    /**
+     * Places the current Nature piece somewhere on the board.
+     * @param mcomponent The m-component of the cell we want to place the Nature piece on.
+     * @param ncomponent The n-component of the cell we want to place the Nature piece on.
+     * @return 'OK' if successful.
+     * @throws InvalidInputException If the coordinate is not on the board.
+     * @throws GameMechanicException If the Nature piece for this phase has already been placed, if the game is over
+     * or if the cell is occupied.
+     */
+    public String setVC(int mcomponent, int ncomponent) throws InvalidInputException, GameMechanicException {
+        if (getCurrentGameStage().isVCPlaced()) {
+            throw new GameMechanicException(getCurrentGameStage().getNaturePiece().getName() 
+                    + " has already been placed.");
         }
         if (isGameOver()) {
             throwGameOver();
         }
 
-        Cell cell = board.getCell(mcoordinate, ncoordinate);
+        Cell cell = board.getCell(mcomponent, ncomponent);
         if (cell == null) {
             throwInvalidCoordinate("");
         }
@@ -100,22 +127,29 @@ public class DawnGame {
         
     }
     
+    /**
+     * Method for rolling the die.
+     * @param symbol The number of the roll or DAWN.
+     * @return 'OK' if successful.
+     * @throws GameMechanicException If the game is over or if the Nature piece hasn't been placed yet.
+     */
     public String roll(String symbol) throws GameMechanicException {
       
-      if(isGameOver() || getCurrentGameStage().isFinished()) {
+      if (isGameOver() || getCurrentGameStage().isFinished()) {
           throwGameOver();
       }
       if (getCurrentGameStage().getRound() == 7) {
           finishedstages.add(getCurrentGameStage());
           stages.remove();
       }
-      if(!getCurrentGameStage().isVCPlaced()) {
-          throw new GameMechanicException("you must first place " + getCurrentGameStage().getNaturePiece().getName() + " before rolling.");
+      if (!getCurrentGameStage().isVCPlaced()) {
+          throw new GameMechanicException("you must first place " 
+      + getCurrentGameStage().getNaturePiece().getName() + " before rolling.");
       }
-      if(hasrolled) {
+      if (hasrolled) {
           throw new GameMechanicException("you have already rolled.");
       }
-      if(symbol.equals("DAWN")) {
+      if (symbol.equals("DAWN")) {
           currentroll = DAWN_NUMBER;
       } else {
           currentroll = Integer.parseInt(symbol);
@@ -138,52 +172,65 @@ public class DawnGame {
         return hasplaced;
     }
 
-    public String place(int headmcoord, int headncoord, int tailmcoord, int tailncoord) throws GameMechanicException, InvalidInputException{
-        int length = computeCoordLength(headmcoord, headncoord, tailmcoord, tailncoord);
+    /**
+     * Places a Mission Control piece.
+     * @param headmcomponent The m-component of the head.
+     * @param headncomponent The n-component of the head.
+     * @param tailmcomponent The m-component of the tail.
+     * @param tailncomponent The n-component of the tail.
+     * @return 'OK' if successful.
+     * @throws GameMechanicException If the game is over, if the die hasn't been rolled yet 
+     * or if one or more cells are occupied.
+     * @throws InvalidInputException Invalid coordinates.
+     */
+    public String place(int headmcomponent, int headncomponent, int tailmcomponent, int tailncomponent) 
+            throws GameMechanicException, InvalidInputException {
+        int length = computeCoordLength(headmcomponent, headncomponent, tailmcomponent, tailncomponent);
         if (isGameOver()) {
             throwGameOver();
         }
         if (!hasrolled) {
             throwRolled();
          }
-        if ((!board.isInBounds(headmcoord, headncoord) && !board.isInBounds(tailmcoord, tailncoord)) 
-                || (!board.isInBounds(headmcoord, headncoord) && length != DAWN_NUMBER)
-                || (!board.isInBounds(tailmcoord, tailncoord) && length != DAWN_NUMBER)) {
+        if ((!board.isInBounds(headmcomponent, headncomponent) && !board.isInBounds(tailmcomponent, tailncomponent)) 
+                || (!board.isInBounds(headmcomponent, headncomponent) && length != DAWN_NUMBER)
+                || (!board.isInBounds(tailmcomponent, tailncomponent) && length != DAWN_NUMBER)) {
             throwInvalidCoordinate("");
         }
         if (length > DAWN_NUMBER || length < MIN_MC_LENGTH) {
             throw new GameMechanicException("this piece isn't a Mission Control piece.");
         }
-        if (headmcoord != tailmcoord && headncoord != tailncoord) {
+        if (headmcomponent != tailmcomponent && headncomponent != tailncomponent) {
             throwInvalidCoordinate(" Only horizontal or vertical placement is allowed.");
          }
         if (!getPossiblePlacements(currentroll).contains(length)) {
             throwInvalidCoordinate(" This placement is not possible.");
         }
-        if (length == DAWN_NUMBER && (!board.isInBounds(headmcoord, headncoord) || !board.isInBounds(tailmcoord, tailncoord))) {
-            placeDawn(headmcoord, headncoord, tailmcoord, tailncoord);
+        if (length == DAWN_NUMBER && (!board.isInBounds(headmcomponent, headncomponent) 
+                || !board.isInBounds(tailmcomponent, tailncomponent))) {
+            placeDawn(headmcomponent, headncomponent, tailmcomponent, tailncomponent);
         } else {
-            placeExecutor(headmcoord, headncoord, tailmcoord, tailncoord);
+            placeExecutor(headmcomponent, headncomponent, tailmcomponent, tailncomponent);
         }
         currentpiecelength = length;
         return StringList.OK.toString();
      }
     
-    private ArrayList<Integer> getPossiblePlacements(int roll) throws InvalidInputException, GameMechanicException{
-        if(!getCurrentGameStage().isMCPlaced(roll)) {
+    private ArrayList<Integer> getPossiblePlacements(int roll) throws InvalidInputException, GameMechanicException {
+        if (!getCurrentGameStage().isMCPlaced(roll)) {
             return new ArrayList<Integer>(Arrays.asList(roll));
         }
         int loweroption = 0;
         int higheroption = 0;
         ArrayList<Integer> possibleplacements = new ArrayList<Integer>();
-        for (int i = roll + 1; i < DAWN_NUMBER ; i++) {
-            if(!getCurrentGameStage().isMCPlaced(i)) {
+        for (int i = roll + 1; i < DAWN_NUMBER; i++) {
+            if (!getCurrentGameStage().isMCPlaced(i)) {
                 higheroption = i;
                 break;
             }
         }
-        for (int i = roll - 1 ; i >= MIN_MC_LENGTH ; i--) {
-            if(!getCurrentGameStage().isMCPlaced(i)) {
+        for (int i = roll - 1; i >= MIN_MC_LENGTH; i--) {
+            if (!getCurrentGameStage().isMCPlaced(i)) {
                 loweroption = i;
                 break;
             }
@@ -197,45 +244,45 @@ public class DawnGame {
         return possibleplacements;
     }
     
-    private void placeExecutor(int headmcoord, int headncoord, int tailmcoord, int tailncoord) 
+    private void placeExecutor(int headmcomponent, int headncomponent, int tailmcomponent, int tailncomponent) 
             throws InvalidInputException, GameMechanicException {
         int largercoord = 0;
         int smallercoord = 0;
-        int length = computeCoordLength(headmcoord, headncoord, tailmcoord, tailncoord);
+        int length = computeCoordLength(headmcomponent, headncomponent, tailmcomponent, tailncomponent);
   
-        if (headmcoord == tailmcoord) {
-            if(!isOccupiedIterator(headncoord, tailncoord, headmcoord, true).isEmpty()) {
-                throwOccupied(isOccupiedIterator(headncoord, tailncoord, headmcoord, true));
+        if (headmcomponent == tailmcomponent) {
+            if (!isOccupiedIterator(headncomponent, tailncomponent, headmcomponent, true).isEmpty()) {
+                throwOccupied(isOccupiedIterator(headncomponent, tailncomponent, headmcomponent, true));
             }
-            if (headncoord > tailncoord) {
-                largercoord = headncoord;
-                smallercoord = tailncoord;
+            if (headncomponent > tailncomponent) {
+                largercoord = headncomponent;
+                smallercoord = tailncomponent;
             } else {
-                largercoord = tailncoord;
-                smallercoord = headncoord;
+                largercoord = tailncomponent;
+                smallercoord = headncomponent;
             }
-            for(int i = smallercoord; i <= largercoord; i++) {
-                board.getCell(headmcoord, i).setPiece(getCurrentGameStage().getMCPieces().get(length));
+            for (int i = smallercoord; i <= largercoord; i++) {
+                board.getCell(headmcomponent, i).setPiece(getCurrentGameStage().getMCPieces().get(length));
             }
         } else {
-            if(!isOccupiedIterator(headmcoord, tailmcoord, headncoord, false).isEmpty()) {
-                throwOccupied(isOccupiedIterator(headmcoord, tailmcoord, headncoord, false));
+            if (!isOccupiedIterator(headmcomponent, tailmcomponent, headncomponent, false).isEmpty()) {
+                throwOccupied(isOccupiedIterator(headmcomponent, tailmcomponent, headncomponent, false));
             }
-            if (headmcoord > tailmcoord) {
-                largercoord = headmcoord;
-                smallercoord = tailmcoord;
+            if (headmcomponent > tailmcomponent) {
+                largercoord = headmcomponent;
+                smallercoord = tailmcomponent;
             } else {
-                largercoord = tailmcoord;
-                smallercoord = headmcoord;
+                largercoord = tailmcomponent;
+                smallercoord = headmcomponent;
             }
-            for(int i = smallercoord; i <= largercoord; i++) {
-                board.getCell(i, headncoord).setPiece(getCurrentGameStage().getMCPieces().get(length));
+            for (int i = smallercoord; i <= largercoord; i++) {
+                board.getCell(i, headncomponent).setPiece(getCurrentGameStage().getMCPieces().get(length));
             } 
         }
         getCurrentGameStage().placeMC(length);
     }
     
-    private void placeDawn(int headmcoord, int headncoord, int tailmcoord, int tailncoord) 
+    private void placeDawn(int headmcomponent, int headncomponent, int tailmcomponent, int tailncomponent) 
             throws InvalidInputException, GameMechanicException {
         
         int largercomp;
@@ -248,15 +295,15 @@ public class DawnGame {
       
         // This is to check if the piece is to be placed horizontally or vertically.
         
-        if (headmcoord == tailmcoord) { // horizontally placed.
-            head = headncoord;
-            tail = tailncoord;
-            commoncomp = headmcoord;
+        if (headmcomponent == tailmcomponent) { // horizontally placed.
+            head = headncomponent;
+            tail = tailncomponent;
+            commoncomp = headmcomponent;
             ishorizontal = true;
         } else { // vertically placed.
-            head = headmcoord;
-            tail = tailmcoord;
-            commoncomp = headncoord;
+            head = headmcomponent;
+            tail = tailmcomponent;
+            commoncomp = headncomponent;
         }
            //TODO handle the out of bounds placement.
           if (head < tail) { // This is to determine which one is bigger.
@@ -301,7 +348,20 @@ public class DawnGame {
             }
             getCurrentGameStage().placeMC(DAWN_NUMBER);
     }
-    public void move(String coordinates) throws GameMechanicException, InvalidInputException {
+    
+    /**
+     * Method to move a Nature piece. Represents one elementary move.
+     * @param coordinates The coordinates to move the piece to.
+     * @throws GameMechanicException If the game is over or a Mission Control piece
+     * hasn't been placed yet.
+     */
+    public void move(String coordinates) throws GameMechanicException {
+        if (isGameOver()) {
+            throwGameOver();
+        }
+        if (!isHasplaced()) {
+            throw new GameMechanicException("you must place a Mission Control piece before moving a Nature piece.");
+        }
         String[] coordinatesplit = coordinates.split(";");
         int mdestination = Integer.parseInt(coordinatesplit[0]);
         int ndestination = Integer.parseInt(coordinatesplit[1]);
@@ -325,7 +385,17 @@ public class DawnGame {
         return finishedstages;
     }
 
-    public boolean checkMovementValidity(String origin, String destination) throws GameMechanicException, InvalidInputException {
+    /**
+     * Checks if a movement is valid or not.
+     * @param origin The current cell we are moving from.
+     * @param destination The destination cell we are moving to.
+     * @return true if the move is valid, otherwise false.
+     * @throws GameMechanicException If the game is over, if the move is diagonal or
+     * if the destination is occupied.
+     * @throws InvalidInputException If the coordinates aren't on the board.
+     */
+    public boolean checkMovementValidity(String origin, String destination) 
+            throws GameMechanicException, InvalidInputException {
         int morigin = 0;
         int norigin = 0;
         Cell origincell;
@@ -352,15 +422,24 @@ public class DawnGame {
             throw new GameMechanicException("a piece can only move horizontally or vertically.");
         }
         if (morigin == mdestination && norigin == ndestination) {
-            throw new GameMechanicException(getCurrentGameStage().getNaturePiece().getName() + "is already there. You must move"
+            throw new GameMechanicException(getCurrentGameStage().getNaturePiece().getName() 
+                    + "is already there. You must move"
                     + " somewhere else.");
         } 
-        if (!(board.getCell(mdestination, ndestination).equals(board.getCellofPiece(getCurrentGameStage().getNaturePiece())))
+        if (!(board.getCell(mdestination, ndestination).equals(
+                board.getCellofPiece(getCurrentGameStage().getNaturePiece())))
                 && board.getCell(mdestination, ndestination).isOccupied()) {
-            throw new GameMechanicException("a piece occupies " + mdestination + ";" + ndestination + " , so you cannot move there.");
+            throw new GameMechanicException("a piece occupies " 
+                + mdestination + ";" + ndestination + " , so you cannot move there.");
         }
        return isMovePossible(mdestination, ndestination, origincell);
     }
+    
+    /**
+     * Print the result of the game.
+     * @return The result of the game.
+     * @throws GameMechanicException If the game isn't over yet.
+     */
     public int showresult() throws GameMechanicException {
         if (!isGameOver()) {
             throw new GameMechanicException("you cannot view the result if the game is not over yet.");
@@ -373,7 +452,7 @@ public class DawnGame {
         Cell ceres = board.getCellofPiece(second.getNaturePiece());
         freespacesceres = DepthFirstSearch.getFreeSpaces(board, ceres);
         freespacesvesta = DepthFirstSearch.getFreeSpaces(board, vesta);
-        if(freespacesceres > freespacesvesta) {
+        if (freespacesceres > freespacesvesta) {
             return freespacesceres + (freespacesceres - freespacesvesta);
         } else if (freespacesceres < freespacesvesta) {
             return freespacesvesta + (freespacesvesta - freespacesceres);
@@ -394,24 +473,24 @@ public class DawnGame {
         throw new InvalidInputException(StringList.INVALID_COORDINATES.toString() + extramessage);
     }
     
-    private void throwGameOver() throws GameMechanicException{
+    private void throwGameOver() throws GameMechanicException {
         throw new GameMechanicException(StringList.GAME_OVER.toString());
     }
     
-    private void throwOccupied(String coordinate) throws GameMechanicException{
+    private void throwOccupied(String coordinate) throws GameMechanicException {
         throw new GameMechanicException(coordinate + StringList.IS_OCCUPIED.toString());
     }
     
-    private void throwRolled() throws GameMechanicException{
+    private void throwRolled() throws GameMechanicException {
         throw new GameMechanicException(StringList.NOT_ROLLED.toString());
     }
     
-    private int computeCoordLength(int headmcoord, int headncoord, int tailmcoord, int tailncoord) {
+    private int computeCoordLength(int headmcomponent, int headncomponent, int tailmcomponent, int tailncomponent) {
         int length;
-        if (headmcoord == tailmcoord) {
-            length = tailncoord - headncoord;
+        if (headmcomponent == tailmcomponent) {
+            length = tailncomponent - headncomponent;
         } else {
-            length = tailmcoord - headmcoord;
+            length = tailmcomponent - headmcomponent;
         }
         if (length < 0) {
             return Math.abs(length) + 1;
@@ -423,6 +502,11 @@ public class DawnGame {
         return finishedstages.size() == 2;
     }
     
+    /**
+     * Getter method for the current game stage.
+     * @return The current game stage.
+     * @throws GameMechanicException If the game is over.
+     */
     public GameStage getCurrentGameStage() throws GameMechanicException {
         if (stages.peek() == null) {
             throwGameOver();
@@ -449,14 +533,26 @@ public class DawnGame {
         return "";
     }
 
+    /**
+     * Getter method for the length of the last placed Mission Control piece.
+     * @return The current Mission Control piece length.
+     */
     public int getCurrentpiecelength() {
         return currentpiecelength;
     }
    
+    /**
+     * Setter method for hasrolled.
+     * @param bool true if the die has been rolled.
+     */
     public void setRolled(boolean bool) {
         this.hasrolled = bool;
     }
     
+    /**
+     * Setter method for hasplaced.
+     * @param bool true if the Mission Control piece has been placed.
+     */
     public void setPlaced(boolean bool) {
         this.hasplaced = bool;
     }

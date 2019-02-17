@@ -68,8 +68,6 @@ public class GameStage {
     
     /**
      * Method to assert that the corresponding Nature piece is on the board.
-     * @param vcplaced Boolean variable that is true when corresponding Nature piece is on the board,
-     * otherwise false.
      */
     
     public void placeVC() {

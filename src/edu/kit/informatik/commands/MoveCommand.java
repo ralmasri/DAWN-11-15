@@ -17,7 +17,7 @@ import edu.kit.informatik.util.StringList;
  *
  */
 
-public class MoveCommand extends Command{
+public class MoveCommand extends Command {
 
     /**
      * Constructor for the command.

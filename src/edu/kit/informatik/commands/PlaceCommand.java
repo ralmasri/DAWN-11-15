@@ -33,7 +33,7 @@ public class PlaceCommand extends Command {
 
     @Override
     public void run(String parameters) throws InvalidInputException, GameMechanicException {
-        InputChecker.checkDAWNCoordinate(parameters);
+        InputChecker.checkPlace(parameters);
         String[] coordinates = parameters.split(":");
         String start = coordinates[0];
         String end = coordinates[1];

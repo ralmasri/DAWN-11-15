@@ -15,7 +15,7 @@ import edu.kit.informatik.ui.InputChecker;
  * @version 1.0
  */
 
-public class RollCommand extends Command{
+public class RollCommand extends Command {
 
     /**
      * Constructor for the command.

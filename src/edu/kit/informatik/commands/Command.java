@@ -6,7 +6,6 @@ import edu.kit.informatik.ui.CommandInterface;
 /**
  * Abstract command class that stores the game.
  * 
- * Inspiration for this design is credited to devfields' article about Abstract classes and Interfaces.
  * 
  * @author Rakan Zeid Al Masri
  * @version 1.0

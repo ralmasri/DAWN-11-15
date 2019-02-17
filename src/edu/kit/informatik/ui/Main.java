@@ -51,7 +51,7 @@ public class Main {
      * @return The list of commands.
      */
     
-    private static List<CommandInterface> initializeAllCommands(final DawnGame game){
+    private static List<CommandInterface> initializeAllCommands(final DawnGame game) {
         return Arrays.asList(new MoveCommand(game), new PlaceCommand(game), new PrintCommand(game),
                 new ResetCommand(game), new RollCommand(game), new SetvcCommand(game), new StateCommand(game),
                 new ShowResultCommand(game));
@@ -66,13 +66,14 @@ public class Main {
      * @throws InvalidInputException If the user inputed wrong number of parameters.
      */
     
-    private static String getParameters(final String[] inputArray, final CommandInterface command) throws InvalidInputException {
+    private static String getParameters(final String[] inputArray, final CommandInterface command) 
+            throws InvalidInputException {
         if (inputArray.length > 2) {
             throw new InvalidInputException("wrong input format.");
         }
         if (inputArray.length == 1) {
-            if (command.getNameofCommand().equals("reset") || command.getNameofCommand().equals("print") || 
-                    command.getNameofCommand().equals("show-result")) {
+            if (command.getNameofCommand().equals("reset") || command.getNameofCommand().equals("print") 
+                    ||  command.getNameofCommand().equals("show-result")) {
                 return "";
             } else {
                 throw new InvalidInputException("you have to give parameters.");

@@ -29,15 +29,15 @@ public class StateCommand extends Command {
     
     @Override
     public String getNameofCommand() {
-        return "state" ;
+        return "state";
     }
     
     @Override
-    public void run(String parameters) throws InvalidInputException, GameMechanicException{
+    public void run(String parameters) throws InvalidInputException, GameMechanicException {
         InputChecker.checkCoordinate(parameters);
         String[] inputsplit = parameters.split(";");
-        int mcoordinate = Integer.parseInt(inputsplit[0]);
-        int ncoordinate = Integer.parseInt(inputsplit[1]);
-        Terminal.printLine(game.state(mcoordinate, ncoordinate));
+        int mcomponent = Integer.parseInt(inputsplit[0]);
+        int ncomponent = Integer.parseInt(inputsplit[1]);
+        Terminal.printLine(game.state(mcomponent, ncomponent));
     }
 }

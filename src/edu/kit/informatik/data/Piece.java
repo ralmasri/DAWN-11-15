@@ -91,7 +91,8 @@ public class Piece {
     public boolean equals(Object obj) {
         if (getClass().equals(obj.getClass())) {
             final Piece otherPiece = (Piece) obj;
-            return (this.symbol == otherPiece.symbol && this.length == otherPiece.length && this.name.equals(otherPiece.name));
+            return (this.symbol == otherPiece.symbol 
+                    && this.length == otherPiece.length && this.name.equals(otherPiece.name));
         }
         return false;
     }

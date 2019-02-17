@@ -1,7 +1,7 @@
 package edu.kit.informatik.util;
 
 /**
- * This class represents strings or regular expressions that I might use.
+ * This class represents strings or regular expressions that I use.
  *
  * @author Rakan Zeid Al Masri
  * @version 1.0
