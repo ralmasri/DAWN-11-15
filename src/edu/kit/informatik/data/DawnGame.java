@@ -135,7 +135,7 @@ public class DawnGame {
      */
     public String roll(String symbol) throws GameMechanicException {
       
-      if (isGameOver() || getCurrentGameStage().isFinished()) {
+      if (isGameOver()) {
           throwGameOver();
       }
       if (getCurrentGameStage().getRound() == 7) {

@@ -52,9 +52,6 @@ public class MoveCommand extends Command {
 
     @Override
     public void run(String parameters) throws InvalidInputException, GameMechanicException {
-        if (!game.isHasplaced()) {
-            throw new GameMechanicException("you must place a piece before moving a Nature piece.");
-        }
         InputChecker.checkMove(parameters, game.getCurrentpiecelength() - 1);
         int coordinatecount = getCountofColon(parameters) + 1;
         String[] inputsplit = parameters.split(":");

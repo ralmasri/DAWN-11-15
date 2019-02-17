@@ -14,7 +14,6 @@ public class GameStage {
 
     private int stagenumber;
     private int currentround;
-    private boolean finished;
     private boolean vcplaced;
     private Piece naturepiece;
     private Map<Integer, Piece> setofmcpieces;
@@ -31,7 +30,6 @@ public class GameStage {
         this.naturepiece = naturepiece;
         this.setofmcpieces = setofmcpieces;
         this.stagenumber = stagenumber;
-        this.finished = false;
         this.mcplaced = new HashMap<Integer, Boolean>();
         
         /**
@@ -46,15 +44,6 @@ public class GameStage {
         mcplaced.put(6, false);
         mcplaced.put(7, false);
         this.currentround = 1;
-    }
-    
-    /**
-     * Constructor for the abstract phase after the second, in which no more pieces are to be placed or moved.
-     * A.K.A. the end of the game.
-     */
-    
-    public GameStage() {
-        this.finished = true;
     }
     
     /**
@@ -135,13 +124,5 @@ public class GameStage {
     
     public int getRound() {
         return currentround;
-    }
-    
-    /**
-     * @return true if the both game stages are done, otherwise false.
-     */
-    
-    public boolean isFinished() {
-        return finished;
     }
 }
