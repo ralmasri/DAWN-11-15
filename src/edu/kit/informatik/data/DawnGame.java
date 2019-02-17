@@ -35,7 +35,6 @@ public class DawnGame {
     private Map<Integer, Piece> secondset;
     private Queue<GameStage> stages;
     private List<GameStage> finishedstages;
-    private FreeSpaces spaces;
     
     
     public DawnGame() {
@@ -64,7 +63,6 @@ public class DawnGame {
         this.stages = new LinkedList<>();
         this.stages.add(new GameStage(vesta, firstset, 1)); // Phase 1.
         this.stages.add(new GameStage(ceres, secondset, 2)); // Phase 2.
-        this.spaces = new FreeSpaces();
         this.finishedstages = new ArrayList<GameStage>();
         this.hasrolled = false;
         this.hasplaced = false;
@@ -371,12 +369,10 @@ public class DawnGame {
         int freespacesvesta = 0;
         GameStage first = finishedstages.get(0);
         GameStage second = finishedstages.get(1);
-        int mvesta = board.getCellofPiece(first.getNaturePiece()).getMCoord();
-        int nvesta = board.getCellofPiece(first.getNaturePiece()).getNCoord();
-        int mceres = board.getCellofPiece(second.getNaturePiece()).getMCoord();
-        int nceres = board.getCellofPiece(second.getNaturePiece()).getNCoord();
-        freespacesceres = spaces.getPossibleMoves(board, mceres, nceres);
-        freespacesvesta = spaces.getPossibleMoves(board, mvesta, nvesta);
+        Cell vesta = board.getCellofPiece(first.getNaturePiece());
+        Cell ceres = board.getCellofPiece(second.getNaturePiece());
+        freespacesceres = DepthFirstSearch.getFreeSpaces(board, ceres);
+        freespacesvesta = DepthFirstSearch.getFreeSpaces(board, vesta);
         if(freespacesceres > freespacesvesta) {
             return freespacesceres + (freespacesceres - freespacesvesta);
         } else if (freespacesceres < freespacesvesta) {

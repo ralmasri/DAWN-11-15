@@ -45,11 +45,13 @@ public class Board {
                 board[i][j] = new Cell(i,j);
             }
         }
+        makeNeighbors();
     }
     
     public Cell[][] getBoard() {
         return board;
     }
+    
     /**
      * @return the width
      */
@@ -79,6 +81,12 @@ public class Board {
         return board[mcoordinate][ncoordinate];
     }
     
+    /**
+     * Returns the cell of a piece.
+     * @param piece The piece.
+     * @return The cell of that piece.
+     */
+    
     public Cell getCellofPiece(Piece piece) {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -101,6 +109,33 @@ public class Board {
         return m >= 0 && m < height && n >= 0 && n < width;
     }
     
+    /**
+     * Generates the neighbors of a Cell.
+     */
+    
+    private void makeNeighbors() {
+        
+        // Represents the North, South, East and West neighbor coordinates.
+        
+        int[] dm = {-1, 1, 0, 0};
+        int[] dn = {0, 0, 1, -1};
+        
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                for (int x = 0; x < 4; x++) {
+                    Cell cell = new Cell(i + dm[x], j + dn[x]);
+                    if (isInBounds(i + dm[x], j + dn[x])) {
+                        board[i][j].addNeighborCell(board[cell.getMCoord()][cell.getNCoord()]);
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Textual represention of the grid.
+     */
+   
     @Override
     public String toString() {
         String outcome = "";

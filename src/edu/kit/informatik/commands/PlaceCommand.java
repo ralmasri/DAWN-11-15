@@ -2,10 +2,11 @@ package edu.kit.informatik.commands;
 
 import edu.kit.informatik.Terminal;
 
+
 import edu.kit.informatik.data.DawnGame;
 import edu.kit.informatik.exceptions.GameMechanicException;
 import edu.kit.informatik.exceptions.InvalidInputException;
-import edu.kit.informatik.ui.InputParser;
+import edu.kit.informatik.ui.InputChecker;
 
 /**
  * Class that represents the place command. Prints "OK" if successful.
@@ -32,7 +33,7 @@ public class PlaceCommand extends Command {
 
     @Override
     public void run(String parameters) throws InvalidInputException, GameMechanicException {
-        InputParser.parseDAWNCoordinate(parameters);
+        InputChecker.checkDAWNCoordinate(parameters);
         String[] coordinates = parameters.split(":");
         String start = coordinates[0];
         String end = coordinates[1];

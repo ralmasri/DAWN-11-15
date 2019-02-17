@@ -2,10 +2,11 @@ package edu.kit.informatik.commands;
 
 import edu.kit.informatik.Terminal;
 
+
 import edu.kit.informatik.data.DawnGame;
 import edu.kit.informatik.exceptions.GameMechanicException;
 import edu.kit.informatik.exceptions.InvalidInputException;
-import edu.kit.informatik.ui.InputParser;
+import edu.kit.informatik.ui.InputChecker;
 
 /**
  * Class the represents the roll command. Prints "OK", when successful.
@@ -32,7 +33,7 @@ public class RollCommand extends Command{
 
     @Override
     public void run(String parameters) throws InvalidInputException, GameMechanicException {
-        InputParser.parseSymbol(parameters);
+        InputChecker.checkSymbol(parameters);
         Terminal.printLine(game.roll(parameters));
         game.setRolled(true);
     }

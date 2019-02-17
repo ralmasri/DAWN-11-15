@@ -14,7 +14,7 @@ import edu.kit.informatik.util.StringList;
  * @version 1.0
  */
 
-public final class InputParser {
+public final class InputChecker {
 
     private static final Pattern COORDINATE_PATTERN = Pattern.compile(StringList.COORDINATE_PATTERN.toString());
     private static final Pattern SYMBOL_PATTERN = Pattern.compile(StringList.ROLL_PATTERN.toString());
@@ -35,7 +35,7 @@ public final class InputParser {
      * @throws InvalidInputException If input is not in the correct format.
      */
     
-    public static String parseCoordinate(final String input) throws InvalidInputException{
+    public static String checkCoordinate(final String input) throws InvalidInputException{
         if(!COORDINATE_PATTERN.matcher(input).matches()) {
             throw new InvalidInputException(StringList.INVALID_COORDINATES.toString() + StringList.COORDINATES_CORRECT_FORMAT.toString());
         }
@@ -49,7 +49,7 @@ public final class InputParser {
      * @throws InvalidInputException If the symbol is not in the correct format.
      */
     
-    public static String parseSymbol(final String input) throws InvalidInputException{
+    public static String checkSymbol(final String input) throws InvalidInputException{
         if(!SYMBOL_PATTERN.matcher(input).matches()) {
             throw new InvalidInputException("invalid symbol.");
         }
@@ -63,7 +63,7 @@ public final class InputParser {
      * @throws InvalidInputException If the coordinates are not in the correct format.
      */
     
-    public static String parseMultipleCoordinates(final String input) throws InvalidInputException{
+    public static String checkMultipleCoordinates(final String input) throws InvalidInputException{
         Pattern pattern = Pattern.compile(MULTIPLE_COORDINATE_PATTERN + "1}");
         if(!pattern.matcher(input).matches()) {
             throw new InvalidInputException(StringList.INVALID_COORDINATES.toString() + StringList.COORDINATES_CORRECT_FORMAT.toString());
@@ -79,7 +79,7 @@ public final class InputParser {
      * @throws InvalidInputException If the coordinates are not in the correct format or wrong number of coordinates given.
      */
     
-    public static String parseMove(final String input, int length) throws InvalidInputException {
+    public static String checkMove(final String input, int length) throws InvalidInputException {
         Pattern pattern = Pattern.compile(MULTIPLE_COORDINATE_PATTERN + "0," + String.valueOf(length) + "}");
         if(!pattern.matcher(input).matches()) {
             throw new InvalidInputException(StringList.INVALID_COORDINATES.toString() + StringList.COORDINATES_CORRECT_FORMAT.toString());
@@ -95,7 +95,7 @@ public final class InputParser {
      * @throws InvalidInputException If the coordinates are not in the correct format.
      */
     
-    public static String parseDAWNCoordinate(final String input) throws InvalidInputException{
+    public static String checkDAWNCoordinate(final String input) throws InvalidInputException{
         if(!DAWN_PATTERN.matcher(input).matches()) {
             throw new InvalidInputException(StringList.INVALID_COORDINATES.toString() + StringList.COORDINATES_CORRECT_FORMAT.toString());
         }

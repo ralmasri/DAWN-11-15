@@ -2,10 +2,11 @@ package edu.kit.informatik.commands;
 
 import edu.kit.informatik.Terminal;
 
+
 import edu.kit.informatik.data.DawnGame;
 import edu.kit.informatik.exceptions.GameMechanicException;
 import edu.kit.informatik.exceptions.InvalidInputException;
-import edu.kit.informatik.ui.InputParser;
+import edu.kit.informatik.ui.InputChecker;
 import edu.kit.informatik.util.StringList;
 
 /**
@@ -54,7 +55,7 @@ public class MoveCommand extends Command{
         if (!game.isHasplaced()) {
             throw new GameMechanicException("you must place a piece before moving a Nature piece.");
         }
-        InputParser.parseMove(parameters, game.getCurrentpiecelength() - 1);
+        InputChecker.checkMove(parameters, game.getCurrentpiecelength() - 1);
         int coordinatecount = getCountofColon(parameters) + 1;
         String[] inputsplit = parameters.split(":");
         String origin = "";

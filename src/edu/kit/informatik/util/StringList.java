@@ -19,6 +19,9 @@ public enum StringList {
      */
     ROLL_PATTERN("[2-6]|DAWN"),
     
+    /**
+     * Separates two coordinates.
+     */
     COORDINATE_SEPARATOR(":"),
     
     /**

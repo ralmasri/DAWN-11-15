@@ -1,5 +1,6 @@
 package edu.kit.informatik.data;
 
+import java.util.LinkedList;
 import java.util.Objects;
 
 /**
@@ -32,11 +33,14 @@ public class Cell {
     /**
      * Constructor for a cell when no piece is on it.
      */
+    private final LinkedList<Cell> neighborCells;
+    
     
     public Cell(int mcoordinate, int ncoordinate) {
         this.piece = null;
         this.mcoordinate = mcoordinate;
         this.ncoordinate = ncoordinate;
+        this.neighborCells = new LinkedList<>();
      }
     
     /**
@@ -84,6 +88,13 @@ public class Cell {
         return piece != null;
     }
     
+    public void addNeighborCell(Cell cell) {
+        neighborCells.add(cell);
+    }
+    
+    public LinkedList<Cell> getNeighbors(){
+        return neighborCells;
+    }
     /**
      * Textual representation of a cell as a grid.
      */
