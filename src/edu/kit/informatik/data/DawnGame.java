@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import edu.kit.informatik.exceptions.*;
+import edu.kit.informatik.exceptions.GameMechanicException;
+import edu.kit.informatik.exceptions.InvalidInputException;
 import edu.kit.informatik.util.StringList;
 
 /**

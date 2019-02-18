@@ -19,7 +19,7 @@ public class DepthFirstSearch {
     public static int getFreeSpaces(Board board, Cell source) {
         boolean[][] visited = new boolean[board.getHeight()][board.getWidth()];
         
-        return traverse(source, visited) - 1; // without source cell
+        return traverse(source, visited) - 1; // subtracted 1 here to not count the source cell.
     }
     
     /**

@@ -3,11 +3,20 @@ package edu.kit.informatik.ui;
 
 import java.util.List;
 
+
 import java.util.Arrays;
 import edu.kit.informatik.Terminal;
-import edu.kit.informatik.commands.*;
+import edu.kit.informatik.commands.PlaceCommand;
+import edu.kit.informatik.commands.MoveCommand;
+import edu.kit.informatik.commands.PrintCommand;
+import edu.kit.informatik.commands.ResetCommand;
+import edu.kit.informatik.commands.RollCommand;
+import edu.kit.informatik.commands.SetvcCommand;
+import edu.kit.informatik.commands.ShowResultCommand;
+import edu.kit.informatik.commands.StateCommand;
 import edu.kit.informatik.data.DawnGame;
-import edu.kit.informatik.exceptions.*;
+import edu.kit.informatik.exceptions.GameMechanicException;
+import edu.kit.informatik.exceptions.InvalidInputException;
 import edu.kit.informatik.util.StringList;
 
 /**
@@ -32,14 +41,13 @@ public class Main {
             int countSpaces = input.length() - temp.replace(" ", "").length();
             final String[] inputArray = input.split(StringList.COMMAND_SEPARATOR.toString());
             try {
-                if (countSpaces > 1) {
+                if (countSpaces > 1 || (countSpaces != 0 && (inputArray[0].equals("print") 
+                        || inputArray[0].equals("reset")
+                        || inputArray[0].equals("show-result")))) {
                     throw new InvalidInputException("a white space is only allowed "
-                            + "between the command and the paramters.");
-                }
-                if (countSpaces > 0 && (!inputArray[0].equals("print") 
-                        || !inputArray[0].equals("reset")
-                        || !inputArray[0].equals("show-result"))) {
-                    throw new InvalidInputException(" you cannot type any spaces for this command.");
+                            + "between the command and its parameters."
+                            + "\n If the command doesn't have any parameters then "
+                            + "white spaces are not allowed.");
                 }
                 final CommandInterface command = commands.stream()
                         .filter(c -> c.getNameofCommand().equals(inputArray[0]))
