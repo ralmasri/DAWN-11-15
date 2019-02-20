@@ -1,7 +1,8 @@
 package edu.kit.informatik.commands;
 
 import edu.kit.informatik.Terminal;
-import edu.kit.informatik.data.DawnGame;
+
+import edu.kit.informatik.data.DawnGameExecutor;
 import edu.kit.informatik.exceptions.GameMechanicException;
 import edu.kit.informatik.exceptions.InvalidInputException;
 
@@ -16,11 +17,11 @@ public class PrintCommand extends Command {
 
     /**
      * Constructor for the command.
-     * @param game The game from which all methods are called.
+     * @param gameExecutor The game from which all methods are called.
      */
     
-    public PrintCommand(final DawnGame game) {
-        super(game);
+    public PrintCommand(final DawnGameExecutor gameExecutor) {
+        super(gameExecutor);
     }
  
 
@@ -31,6 +32,6 @@ public class PrintCommand extends Command {
 
     @Override
     public void run(String parameters) throws InvalidInputException, GameMechanicException {
-        Terminal.printLine(game.print());
+        Terminal.printLine(gameExecutor.print());
     }
 }

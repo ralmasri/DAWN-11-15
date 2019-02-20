@@ -3,10 +3,12 @@ package edu.kit.informatik.commands;
 import edu.kit.informatik.Terminal;
 
 
-import edu.kit.informatik.data.DawnGame;
+
+import edu.kit.informatik.data.DawnGameExecutor;
 import edu.kit.informatik.exceptions.GameMechanicException;
 import edu.kit.informatik.exceptions.InvalidInputException;
 import edu.kit.informatik.ui.InputChecker;
+import edu.kit.informatik.util.StringList;
 
 /**
  * Class that represents the set-vc command. Prints "OK", when successful.
@@ -19,12 +21,13 @@ public class SetvcCommand extends Command {
 
     /**
      * Constructor for the game.
-     * @param game The game from which all methods are called.
+     * @param gameExecutor The game from which all methods are called.
      */
     
-    public SetvcCommand(final DawnGame game) {
-        super(game);
+    public SetvcCommand(final DawnGameExecutor gameExecutor) {
+        super(gameExecutor);
     }
+    
     @Override
     public String getNameofCommand() {
         return "set-vc";
@@ -33,9 +36,9 @@ public class SetvcCommand extends Command {
     @Override
     public void run(String parameters) throws InvalidInputException, GameMechanicException {
         InputChecker.checkCoordinate(parameters);
-        String[] inputsplit = parameters.split(";");
-        int mcoordinate = Integer.parseInt(inputsplit[0]);
-        int ncoordinate = Integer.parseInt(inputsplit[1]);
-        Terminal.printLine(game.setVC(mcoordinate, ncoordinate));
+        String[] inputsplit = parameters.split(StringList.COMPONENT_SEPARATOR.toString());
+        int mcomponent = Integer.parseInt(inputsplit[0]);
+        int ncomponent = Integer.parseInt(inputsplit[1]);
+        Terminal.printLine(gameExecutor.setVC(mcomponent, ncomponent));
     }
 }

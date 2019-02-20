@@ -1,6 +1,6 @@
 package edu.kit.informatik.commands;
 
-import edu.kit.informatik.data.DawnGame;
+import edu.kit.informatik.data.DawnGameExecutor;
 import edu.kit.informatik.ui.CommandInterface;
 
 /**
@@ -17,14 +17,14 @@ public abstract class Command implements CommandInterface {
      * The game on which all methods are to be applied.
      */
     
-    protected DawnGame game;
+    protected DawnGameExecutor gameExecutor;
     
     /**
      * Constructor for the game to execute commands on.
-     * @param game The game from which all methods are called.
+     * @param gameExecutor The game from which all methods are called.
      */
     
-    protected Command(final DawnGame game) {
-        this.game = game;
+    protected Command(final DawnGameExecutor gameExecutor) {
+        this.gameExecutor = gameExecutor;
     }
 }

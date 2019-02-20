@@ -3,7 +3,8 @@ package edu.kit.informatik.commands;
 import edu.kit.informatik.Terminal;
 
 
-import edu.kit.informatik.data.DawnGame;
+
+import edu.kit.informatik.data.DawnGameExecutor;
 import edu.kit.informatik.exceptions.GameMechanicException;
 import edu.kit.informatik.exceptions.InvalidInputException;
 import edu.kit.informatik.ui.InputChecker;
@@ -19,11 +20,11 @@ public class RollCommand extends Command {
 
     /**
      * Constructor for the command.
-     * @param game The game from which all methods are called.
+     * @param gameExecutor The game from which all methods are called.
      */
     
-    public RollCommand(DawnGame game) {
-        super(game);
+    public RollCommand(DawnGameExecutor gameExecutor) {
+        super(gameExecutor);
     }
 
     @Override
@@ -34,7 +35,7 @@ public class RollCommand extends Command {
     @Override
     public void run(String parameters) throws InvalidInputException, GameMechanicException {
         InputChecker.checkSymbol(parameters);
-        Terminal.printLine(game.roll(parameters));
-        game.setRolled(true);
+        Terminal.printLine(gameExecutor.roll(parameters));
+        gameExecutor.getGame().setRolled(true);
     }
 }

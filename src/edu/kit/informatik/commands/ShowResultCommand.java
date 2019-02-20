@@ -1,7 +1,8 @@
 package edu.kit.informatik.commands;
 
 import edu.kit.informatik.Terminal;
-import edu.kit.informatik.data.DawnGame;
+
+import edu.kit.informatik.data.DawnGameExecutor;
 import edu.kit.informatik.exceptions.GameMechanicException;
 import edu.kit.informatik.exceptions.InvalidInputException;
 
@@ -16,11 +17,11 @@ public class ShowResultCommand extends Command {
 
     /**
      * Constructor for the command.
-     * @param game The game from which all methods are called.
+     * @param gameExecutor The game from which all methods are called.
      */
     
-    public ShowResultCommand(DawnGame game) {
-        super(game);
+    public ShowResultCommand(DawnGameExecutor gameExecutor) {
+        super(gameExecutor);
     }
 
     @Override
@@ -30,6 +31,6 @@ public class ShowResultCommand extends Command {
 
     @Override
     public void run(String parameters) throws InvalidInputException, GameMechanicException {
-        Terminal.printLine(game.showresult());
+        Terminal.printLine(gameExecutor.showresult());
     }
 }

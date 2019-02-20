@@ -4,6 +4,7 @@ package edu.kit.informatik.ui;
 import java.util.List;
 
 
+
 import java.util.Arrays;
 import edu.kit.informatik.Terminal;
 import edu.kit.informatik.commands.PlaceCommand;
@@ -14,7 +15,7 @@ import edu.kit.informatik.commands.RollCommand;
 import edu.kit.informatik.commands.SetvcCommand;
 import edu.kit.informatik.commands.ShowResultCommand;
 import edu.kit.informatik.commands.StateCommand;
-import edu.kit.informatik.data.DawnGame;
+import edu.kit.informatik.data.DawnGameExecutor;
 import edu.kit.informatik.exceptions.GameMechanicException;
 import edu.kit.informatik.exceptions.InvalidInputException;
 import edu.kit.informatik.util.StringList;
@@ -34,28 +35,29 @@ public class Main {
      */
     
     public static void main(String[] args) {
-        final DawnGame game = new DawnGame();
-        final List<CommandInterface> commands = Main.initializeAllCommands(game);
+        final DawnGameExecutor gameExecutor = new DawnGameExecutor();
+        final List<CommandInterface> commands = Main.initializeAllCommands(gameExecutor);
         for (String input = Terminal.readLine(); !input.equals("quit"); input = Terminal.readLine()) {
             String temp = input;
-            int countSpaces = input.length() - temp.replace(" ", "").length();
+            int countSpaces = input.length() - temp.replace(" ", "").length(); // To count how many spaces.
             final String[] inputArray = input.split(StringList.COMMAND_SEPARATOR.toString());
             try {
                 if (countSpaces > 1 || (countSpaces != 0 && (inputArray[0].equals("print") 
                         || inputArray[0].equals("reset")
                         || inputArray[0].equals("show-result")))) {
-                    throw new InvalidInputException("a white space is only allowed "
+                    throw new InvalidInputException("only one white space is allowed "
                             + "between the command and its parameters."
                             + "\n If the command doesn't have any parameters then "
                             + "white spaces are not allowed.");
                 }
-                final CommandInterface command = commands.stream()
+                final CommandInterface command = commands
+                        .stream()
                         .filter(c -> c.getNameofCommand().equals(inputArray[0]))
                         .findAny()
                         .orElseThrow(() -> new InvalidInputException(StringList.COMMAND_DOESNT_EXIST.toString()));
                 final String parameters = Main.getParameters(inputArray, command);
                 command.run(parameters);
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (ArrayIndexOutOfBoundsException e) { // If no command was entered.
                 Terminal.printError("you must enter a command.");
             } catch (GameMechanicException | InvalidInputException e) {
                 Terminal.printError(e.getMessage());
@@ -70,7 +72,7 @@ public class Main {
      * @return The list of commands.
      */
     
-    private static List<CommandInterface> initializeAllCommands(final DawnGame game) {
+    private static List<CommandInterface> initializeAllCommands(final DawnGameExecutor game) {
         return Arrays.asList(new MoveCommand(game), new PlaceCommand(game), new PrintCommand(game),
                 new ResetCommand(game), new RollCommand(game), new SetvcCommand(game), new StateCommand(game),
                 new ShowResultCommand(game));
@@ -91,6 +93,9 @@ public class Main {
             throw new InvalidInputException("wrong input format.");
         }
         if (inputArray.length == 1) {
+            
+             // The only commands that have no parameters.
+            
             if (command.getNameofCommand().equals("reset") || command.getNameofCommand().equals("print") 
                     ||  command.getNameofCommand().equals("show-result")) {
                 return "";

@@ -3,7 +3,8 @@ package edu.kit.informatik.commands;
 import edu.kit.informatik.Terminal;
 
 
-import edu.kit.informatik.data.DawnGame;
+
+import edu.kit.informatik.data.DawnGameExecutor;
 import edu.kit.informatik.ui.InputChecker;
 import edu.kit.informatik.exceptions.*;
 
@@ -20,11 +21,11 @@ public class StateCommand extends Command {
 
     /**
      * Constructor for the command.
-     * @param game The game from which all methods are called.
+     * @param gameExecutor The game from which all methods are called.
      */
     
-    public StateCommand(final DawnGame game) {
-        super(game);
+    public StateCommand(final DawnGameExecutor gameExecutor) {
+        super(gameExecutor);
     }
     
     @Override
@@ -38,6 +39,6 @@ public class StateCommand extends Command {
         String[] inputsplit = parameters.split(";");
         int mcomponent = Integer.parseInt(inputsplit[0]);
         int ncomponent = Integer.parseInt(inputsplit[1]);
-        Terminal.printLine(game.state(mcomponent, ncomponent));
+        Terminal.printLine(gameExecutor.state(mcomponent, ncomponent));
     }
 }

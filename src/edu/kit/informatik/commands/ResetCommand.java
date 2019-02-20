@@ -1,7 +1,8 @@
 package edu.kit.informatik.commands;
 
 import edu.kit.informatik.Terminal;
-import edu.kit.informatik.data.DawnGame;
+
+import edu.kit.informatik.data.DawnGameExecutor;
 import edu.kit.informatik.exceptions.GameMechanicException;
 import edu.kit.informatik.exceptions.InvalidInputException;
 import edu.kit.informatik.util.StringList;
@@ -17,11 +18,11 @@ public class ResetCommand extends Command {
 
     /**
      * Constructor for the command.
-     * @param game The game from which all methods are called.
+     * @param gameExecutor The game from which all methods are called.
      */
     
-    public ResetCommand(DawnGame game) {
-        super(game);
+    public ResetCommand(DawnGameExecutor gameExecutor) {
+        super(gameExecutor);
     }
 
     @Override
@@ -31,7 +32,7 @@ public class ResetCommand extends Command {
 
     @Override
     public void run(String parameters) throws InvalidInputException, GameMechanicException {
-        game.reset();
+        gameExecutor.getGame().reset();
         Terminal.printLine(StringList.OK.toString());
     }
 }

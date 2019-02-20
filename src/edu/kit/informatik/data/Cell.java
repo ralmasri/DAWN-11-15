@@ -16,13 +16,13 @@ public class Cell {
      * M-component of the cell.
      */
     
-    private int mcoordinate;
+    private int mcomponent;
     
     /**
      * N-component of the cell.
      */
     
-    private int ncoordinate;
+    private int ncomponent;
    
     /**
      * The piece that occupies this cell or null.
@@ -44,8 +44,8 @@ public class Cell {
     
     public Cell(int mcomponent, int ncomponent) {
         this.piece = null;
-        this.mcoordinate = mcomponent;
-        this.ncoordinate = ncomponent;
+        this.mcomponent = mcomponent;
+        this.ncomponent = ncomponent;
         this.neighborCells = new LinkedList<>();
      }
     
@@ -55,7 +55,7 @@ public class Cell {
      */
     
     public int getMCoord() {
-        return mcoordinate;
+        return mcomponent;
     }
     
     /**
@@ -64,7 +64,7 @@ public class Cell {
      */
     
     public int getNCoord() {
-        return ncoordinate;
+        return ncomponent;
     }
     
     /**
@@ -122,14 +122,14 @@ public class Cell {
     
     @Override
     public int hashCode() {
-        return Objects.hash(mcoordinate, ncoordinate);
+        return Objects.hash(mcomponent, ncomponent);
     }
     
     @Override
     public boolean equals(Object obj) {
         if (getClass().equals(obj.getClass())) {
             final Cell otherCell = (Cell) obj;
-            return (this.mcoordinate == otherCell.mcoordinate && this.ncoordinate == otherCell.ncoordinate);
+            return (this.mcomponent == otherCell.mcomponent && this.ncomponent == otherCell.ncomponent);
         }
         return false;
     }

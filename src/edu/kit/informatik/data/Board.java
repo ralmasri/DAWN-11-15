@@ -120,15 +120,15 @@ public class Board {
         
         // Array of additions we have to do to get the north, south, east and west neighbors of a cell.
         
-        int[] dm = {-1, 1, 0, 0};
-        int[] dn = {0, 0, 1, -1};
+        int[] addm = {-1, 1, 0, 0};
+        int[] addn = {0, 0, 1, -1};
         
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 for (int x = 0; x < 4; x++) { 
                     // loops through the array of additions. Four operations because diagonal movement is not allowed.
-                    Cell cell = new Cell(i + dm[x], j + dn[x]);
-                    if (isInBounds(i + dm[x], j + dn[x])) {
+                    Cell cell = new Cell(i + addm[x], j + addn[x]);
+                    if (isInBounds(i + addm[x], j + addn[x])) {
                         board[i][j].addNeighborCell(board[cell.getMCoord()][cell.getNCoord()]);
                     }
                 }
