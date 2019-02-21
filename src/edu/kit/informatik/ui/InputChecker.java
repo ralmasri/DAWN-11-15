@@ -2,8 +2,8 @@ package edu.kit.informatik.ui;
 
 import java.util.regex.Pattern;
 
-
-
+import edu.kit.informatik.data.DawnGame;
+import edu.kit.informatik.exceptions.GameMechanicException;
 import edu.kit.informatik.exceptions.InvalidInputException;
 import edu.kit.informatik.util.StringList;
 
@@ -26,7 +26,10 @@ public final class InputChecker {
             + StringList.COMPONENT_SEPARATOR.toString()
             + StringList.DAWN_NCOORDINATE_PATTERN.toString());
     private static final String MULTIPLE_COORDINATE_PATTERN = StringList.COORDINATE_PATTERN.toString() 
-            + "(" + StringList.COORDINATE_SEPARATOR.toString() + StringList.COORDINATE_PATTERN.toString() + "){";
+            + "(" 
+            + StringList.COORDINATE_SEPARATOR.toString() 
+            + StringList.COORDINATE_PATTERN.toString() 
+            + "){";
     
     /**
      * Method to check if coordinate is in correct format.
@@ -60,19 +63,28 @@ public final class InputChecker {
     }
     
     /**
-     * Method to check if multiple coordinates are in the correct format. 
-     * The number of coordinates depends on {@code length}.
+     * Method to check if multiple coordinates are in the correct format and follow game rules.
      * 
-     * @param input The coordinates to check.
-     * @param length The upper range of possible number of parameters.
-     * @return The coordinates.
-     * @throws InvalidInputException If the coordinates are not in the correct format 
-     * or wrong number of coordinates given.
+     * @param input The moves to check.
+     * @param length The maximum number of allowed moves - 1.
+     * @return The moves.
+     * @throws InvalidInputException If the input format is incorrect, 
+     * no moves were entered or if more than 7 moves were entered.
+     * @throws GameMechanicException If too many moves are entered. 
      */
     
-    public static String checkMove(final String input, int length) throws InvalidInputException {
+    public static String checkMove(final String input, int length) 
+            throws InvalidInputException, GameMechanicException {
         Pattern pattern = Pattern.compile(MULTIPLE_COORDINATE_PATTERN + "0," + String.valueOf(length) + "}");
         if (!pattern.matcher(input).matches()) {
+            for (int i = length + 1; i <= DawnGame.getDawnNumber(); i++) {
+                Pattern toolarge = Pattern.compile(MULTIPLE_COORDINATE_PATTERN + String.valueOf(i) + "}");
+                if (toolarge.matcher(input).matches()) {
+                    throw new GameMechanicException("you are only allowed a maximum of "
+                            + String.valueOf(length + 1) + " moves and you have entered "
+                            + String.valueOf(i + 1) + " moves.");
+                }
+            }
             throw new InvalidInputException(StringList.INVALID_COORDINATES.toString() 
                     + StringList.COORDINATES_CORRECT_FORMAT.toString());
         }

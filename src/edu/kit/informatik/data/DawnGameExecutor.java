@@ -5,13 +5,11 @@ import java.util.Arrays;
 import edu.kit.informatik.exceptions.GameMechanicException;
 import edu.kit.informatik.exceptions.InvalidInputException;
 import edu.kit.informatik.util.StringList;
-
 /**
  * Contains all the methods that allow someone to play DAWN 11/15.
  * @author Rakan Zeid Al Masri
  * @version 1.0
  */
-
 public class DawnGameExecutor {
 
     private DawnGame game; // The game.
@@ -479,17 +477,19 @@ public class DawnGameExecutor {
      * @return If a cell is occupied, returns an error message, otherwise empty string.
      */
     private String isOccupiedIterator(int start, int destination, int commoncomponent, boolean ismcomp) {
-        if (ismcomp) {
+        if (ismcomp) { // Horizontal.
             for (int i = start; i <= destination; i++) {
                 if (game.getBoard().getCell(commoncomponent, i).isOccupied()) {
-                    return String.valueOf(game.getBoard().getCell(commoncomponent, i).getMCoord()) + ";" 
-                + String.valueOf(game.getBoard().getCell(commoncomponent, i).getNCoord());
+                    return String.valueOf(game.getBoard().getCell(commoncomponent, i).getMCoord()) 
+                            + StringList.COMPONENT_SEPARATOR.toString()
+                            + String.valueOf(game.getBoard().getCell(commoncomponent, i).getNCoord());
                 }
             }
-        } else {
+        } else { // Vertical.
             for (int i = start; i <= destination; i++) {
                 if (game.getBoard().getCell(i, commoncomponent).isOccupied()) {
-                    return String.valueOf(game.getBoard().getCell(i, commoncomponent).getMCoord()) + ";" 
+                    return String.valueOf(game.getBoard().getCell(i, commoncomponent).getMCoord()) 
+                            + StringList.COMPONENT_SEPARATOR.toString()
                             + String.valueOf(game.getBoard().getCell(i, commoncomponent).getNCoord());
                 }
             }

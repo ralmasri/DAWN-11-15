@@ -42,7 +42,8 @@ public class Main {
             int countSpaces = input.length() - temp.replace(" ", "").length(); // To count how many spaces.
             final String[] inputArray = input.split(StringList.COMMAND_SEPARATOR.toString());
             try {
-                if (countSpaces > 1 || (countSpaces != 0 && (inputArray[0].equals("print") 
+                if (countSpaces > 1 
+                        || (countSpaces != 0 && (inputArray[0].equals("print") 
                         || inputArray[0].equals("reset")
                         || inputArray[0].equals("show-result")))) {
                     throw new InvalidInputException("only one white space is allowed "
@@ -68,14 +69,19 @@ public class Main {
     /**
      * Initializes all the commands as a list.
      * 
-     * @param game The game that has all the methods to play the game.
+     * @param gameExecutor The game that has all the methods to play the game.
      * @return The list of commands.
      */
     
-    private static List<CommandInterface> initializeAllCommands(final DawnGameExecutor game) {
-        return Arrays.asList(new MoveCommand(game), new PlaceCommand(game), new PrintCommand(game),
-                new ResetCommand(game), new RollCommand(game), new SetvcCommand(game), new StateCommand(game),
-                new ShowResultCommand(game));
+    private static List<CommandInterface> initializeAllCommands(final DawnGameExecutor gameExecutor) {
+        return Arrays.asList(new MoveCommand(gameExecutor), 
+                new PlaceCommand(gameExecutor), 
+                new PrintCommand(gameExecutor),
+                new ResetCommand(gameExecutor), 
+                new RollCommand(gameExecutor), 
+                new SetvcCommand(gameExecutor), 
+                new StateCommand(gameExecutor),
+                new ShowResultCommand(gameExecutor));
     }
     
     /**

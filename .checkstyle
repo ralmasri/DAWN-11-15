@@ -4,6 +4,12 @@
   <local-check-config name="Abschluss 1" location="C:\Users\rakoo\Desktop\allCheckstyleRules.xml" type="external" description="">
     <additional-data name="protect-config-file" value="false"/>
   </local-check-config>
+  <local-check-config name="Required Abscluss 1" location="C:\Users\rakoo\Downloads\requiredCheckstyleRules.xml" type="external" description="">
+    <additional-data name="protect-config-file" value="false"/>
+  </local-check-config>
+  <local-check-config name="Optional Abscluss 1" location="C:\Users\rakoo\Downloads\optionalCheckstyleRules.xml" type="external" description="">
+    <additional-data name="protect-config-file" value="false"/>
+  </local-check-config>
   <fileset name="all" enabled="true" check-config-name="Abschluss 1" local="true">
     <file-match-pattern match-pattern="." include-pattern="true"/>
   </fileset>
