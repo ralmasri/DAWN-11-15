@@ -27,7 +27,7 @@ public class DawnGameExecutor {
      * @param ncomponent The n-component of the cell.
      * @return  '-' if the cell is empty, 'V' for Vesta, 'C' for Ceres or '+' if a Mission Control piece
      * is on the cell.
-     * @throws InvalidInputException If the coordinates are not on the board.
+     * @throws InvalidInputException If the coordinate is not on the board.
      */
     public String state(int mcomponent, int ncomponent) throws InvalidInputException {
         Cell cell = game.getBoard().getCell(mcomponent, ncomponent);
@@ -123,16 +123,16 @@ public class DawnGameExecutor {
         if (game.isGameOver()) {
             throwGameOver();
         }
-        if (!game.hasRolled()) {
+        if (!game.hasRolled()) { // If the player hasn't rolled the die yet.
             throwRolled();
-         }
+         } // If the head and tail aren't on the board or either head or tail aren't on the board, but length != 7.
         if ((!game.getBoard().isInBounds(headmcomponent, headncomponent) 
                 && !game.getBoard().isInBounds(tailmcomponent, tailncomponent)) 
                 || (!game.getBoard().isInBounds(headmcomponent, headncomponent) 
                         && length != DawnGame.getDawnNumber())
                 || (!game.getBoard().isInBounds(tailmcomponent, tailncomponent) 
                         && length != DawnGame.getDawnNumber())) {
-            if (length == DawnGame.getDawnNumber()) {
+            if (length == DawnGame.getDawnNumber()) { // Unique error message for DAWN piece.
                 throw new InvalidInputException("either the tail or head of the DAWN piece must be on the "
                         + "board for a valid placement.");
             }
@@ -152,8 +152,9 @@ public class DawnGameExecutor {
         }
         if (length == DawnGame.getDawnNumber() && (!game.getBoard().isInBounds(headmcomponent, headncomponent) 
                 || !game.getBoard().isInBounds(tailmcomponent, tailncomponent))) {
-            placeDawn(headmcomponent, headncomponent, tailmcomponent, tailncomponent);
-        } else {
+         // If DAWN's head or tail isn't on the board.
+            placeDawn(headmcomponent, headncomponent, tailmcomponent, tailncomponent); 
+        } else { // Normal placement for DAWN and other pieces.
             placeExecutor(headmcomponent, headncomponent, tailmcomponent, tailncomponent);
         }
         
@@ -330,18 +331,18 @@ public class DawnGameExecutor {
     
     /**
      * Method to move a Nature piece. Represents one elementary move.
-     * @param coordinates The coordinates to move the piece to.
+     * @param coordinate The coordinate to move the piece to.
      * @throws GameMechanicException If the game is over or a Mission Control piece
      * hasn't been placed yet.
      */
-    public void move(String coordinates) throws GameMechanicException {
+    public void move(String coordinate) throws GameMechanicException {
         if (game.isGameOver()) {
             throwGameOver();
         }
         if (!game.hasPlaced()) {
             throw new GameMechanicException("you must place a Mission Control piece before moving a Nature piece.");
         }
-        String[] coordinatesplit = coordinates.split(";");
+        String[] coordinatesplit = coordinate.split(StringList.COMPONENT_SEPARATOR.toString());
         int mdestination = Integer.parseInt(coordinatesplit[0]);
         int ndestination = Integer.parseInt(coordinatesplit[1]);
         Piece naturepiece = game.getCurrentGameStage().getNaturePiece();
@@ -417,12 +418,12 @@ public class DawnGameExecutor {
         Cell ceres = game.getBoard().getCellofPiece(second.getNaturePiece());
         freespacesceres = DepthFirstSearch.getFreeSpaces(game.getBoard(), ceres);
         freespacesvesta = DepthFirstSearch.getFreeSpaces(game.getBoard(), vesta);
-        if (freespacesceres > freespacesvesta) {
+        if (freespacesceres > freespacesvesta) { // Applying the formula from the question.
             return freespacesceres + (freespacesceres - freespacesvesta);
         } else if (freespacesceres < freespacesvesta) {
             return freespacesvesta + (freespacesvesta - freespacesceres);
         } else {
-            return 0; // If they are equal
+            return 0; // If F(V) = F(C)
         }
     }
 

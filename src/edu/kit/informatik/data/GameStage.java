@@ -14,7 +14,7 @@ public class GameStage {
 
     private int stagenumber;
     private int currentround;
-    private boolean vcplaced;
+    private boolean vcplaced; // Tracks if a Nature piece has been placed.
     private Piece naturepiece;
     private Map<Integer, Piece> setofmcpieces;
     private Map<Integer, Boolean> mcplaced;

@@ -32,7 +32,7 @@ public class DawnGame {
     private Board board;
     private Map<Integer, Piece> firstset; // First set for Mission Control.
     private Map<Integer, Piece> secondset; // Second set for Mission Control.
-    private Queue<GameStage> stages; // Queue of game stages.
+    private Queue<GameStage> stages;
     private List<GameStage> finishedstages; // Once a stage is finished, it is added to this list.
     
     /**

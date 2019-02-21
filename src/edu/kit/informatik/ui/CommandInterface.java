@@ -3,7 +3,7 @@ package edu.kit.informatik.ui;
 import edu.kit.informatik.exceptions.*;
 
 /**
- * Interface of all methods relating to command execution.
+ * Interface for commands. Includes the execution method and a Getter for the name of the command.
  * 
  * @author Rakan Zeid Al Masri
  * @version 1.0

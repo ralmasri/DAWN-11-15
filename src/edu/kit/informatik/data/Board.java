@@ -98,7 +98,7 @@ public class Board {
                 } 
             }
         }
-        return board[0][0];
+        return null;
      }
     
     /**

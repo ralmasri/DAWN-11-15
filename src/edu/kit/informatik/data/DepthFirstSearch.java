@@ -11,7 +11,7 @@ public class DepthFirstSearch {
 
     /**
      * Method to get the the free spaces of a piece.
-     * @param board The DAWN board.
+     * @param board The DAWN 11/15 board.
      * @param source The cell of the Nature piece.
      * @return The number of free spaces.
      */
@@ -31,7 +31,7 @@ public class DepthFirstSearch {
     
     private static int traverse(Cell source, boolean[][] visited) {
         visited[source.getMCoord()][source.getNCoord()] = true;
-        int visitedCells = 0;
+        int visitedCells = 0; // Keeps track of many visited cells were visited.
         
         for (Cell neighbor : source.getNeighbors()) {
             if (!neighbor.isOccupied() && !visited[neighbor.getMCoord()][neighbor.getNCoord()]) {

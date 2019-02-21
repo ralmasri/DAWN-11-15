@@ -64,7 +64,7 @@ public class MoveCommand extends Command {
         String origin = "";
         Piece nature = gameExecutor.getGame().getCurrentGameStage().getNaturePiece();
         Cell cellofnaturepiece = gameExecutor.getGame().getBoard().getCellofPiece(nature);
-        if (gameExecutor.getGame().areThereNoFreeSpaces(cellofnaturepiece)) { // The case where iii is skipped.
+        if (gameExecutor.getGame().areThereNoFreeSpaces(cellofnaturepiece)) { // The case where (iii) is skipped.
             if (!parameters.isEmpty()) {
                 throw new GameMechanicException("a move is not possible, because "
                         + nature.getName() + " is blocked from all directions.");
