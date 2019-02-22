@@ -147,6 +147,9 @@ public class Board {
             for (int j = 0; j < board[i].length; j++) {
                 outcome += board[i][j].toString();
             }
+            if (i == board.length - 1){
+                break;
+            }
             outcome += "\n";
         }
         return outcome;
