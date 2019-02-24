@@ -58,35 +58,38 @@ public class MoveCommand extends Command {
      */
     @Override
     public void run(String parameters) throws InvalidInputException, GameMechanicException {
+        if (!gameExecutor.getGame().hasPlaced()) {
+            throw new GameMechanicException("you must first place a Mission Control piece before moving.");
+        }
         InputChecker.checkMove(parameters, gameExecutor.getGame().getCurrentpiecelength() - 1);
-        int coordinatecount = getCountofColon(parameters) + 1;
-        String[] inputsplit = parameters.split(StringList.COORDINATE_SEPARATOR.toString());
+        int coordinateCount = getCountofColon(parameters) + 1;
+        String[] inputSplit = parameters.split(StringList.COORDINATE_SEPARATOR.toString());
         String origin = "";
         Piece nature = gameExecutor.getGame().getCurrentGameStage().getNaturePiece();
-        Cell cellofnaturepiece = gameExecutor.getGame().getBoard().getCellofPiece(nature);
-        if (gameExecutor.getGame().areThereNoFreeSpaces(cellofnaturepiece)) { // The case where (iii) is skipped.
+        Cell cellofNaturePiece = gameExecutor.getGame().getBoard().getCellofPiece(nature);
+        if (gameExecutor.getGame().areThereNoFreeSpaces(cellofNaturePiece)) { // The case where (iii) is skipped.
             if (!parameters.isEmpty()) {
                 throw new GameMechanicException("a move is not possible, because "
                         + nature.getName() + " is blocked from all directions.");
             } 
         }
-        for (int i = 0; i < coordinatecount; i++) {
+        for (int i = 0; i < coordinateCount; i++) {
             if (i == 0) {
                 origin = "nature"; // The first move has the origin as the Nature piece.
             } else {
-                origin = inputsplit[i - 1]; // Every other move, has the origin as the move parameters before it.
+                origin = inputSplit[i - 1]; // Every other move, has the origin as the move parameters before it.
             }
-            if (!gameExecutor.checkMovementValidity(origin, inputsplit[i])) {
-                String[] coordinatesplit = inputsplit[i].split(StringList.COMPONENT_SEPARATOR.toString());
-                int m = Integer.parseInt(coordinatesplit[0]);
-                int n = Integer.parseInt(coordinatesplit[1]);
+            if (!gameExecutor.checkMovementValidity(origin, inputSplit[i])) {
+                String[] coordinateSplit = inputSplit[i].split(StringList.COMPONENT_SEPARATOR.toString());
+                int m = Integer.parseInt(coordinateSplit[0]);
+                int n = Integer.parseInt(coordinateSplit[1]);
                 throw new InvalidInputException("a movement to " + "field " + m 
                         + StringList.COMPONENT_SEPARATOR.toString() + n + " is not valid.");
             }
             
         }
-        for (int i = 0; i < coordinatecount; i++) { // Executes all the moves.
-            gameExecutor.move(inputsplit[i]);
+        for (int i = 0; i < coordinateCount; i++) { // Executes all the moves.
+            gameExecutor.move(inputSplit[i]);
         }
         gameExecutor.getGame().getCurrentGameStage().goToNextRound();
         Terminal.printLine(StringList.OK.toString());

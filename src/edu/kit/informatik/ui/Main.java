@@ -37,9 +37,10 @@ public class Main {
     public static void main(String[] args) {
         final DawnGameExecutor gameExecutor = new DawnGameExecutor();
         final List<CommandInterface> commands = Main.initializeAllCommands(gameExecutor);
-        for (String input = Terminal.readLine(); !input.equals("quit"); input = Terminal.readLine()) {
+        String input = Terminal.readLine();
+        while (!input.equals("quit")) {
             String temp = input;
-            int countSpaces = input.length() - temp.replace(" ", "").length(); // To count how many spaces.
+            int countSpaces = input.length() - temp.replace(" ", "").length();
             final String[] inputArray = input.split(StringList.COMMAND_SEPARATOR.toString());
             try {
                 if (countSpaces > 1 
@@ -48,7 +49,7 @@ public class Main {
                         || inputArray[0].equals("show-result")))) {
                     throw new InvalidInputException("only one white space is allowed "
                             + "between the command and its parameters."
-                            + "\n If the command doesn't have any parameters then "
+                            + "\n If the command doesn't have any parameters, "
                             + "white spaces are not allowed.");
                 }
                 final CommandInterface command = commands
@@ -63,7 +64,9 @@ public class Main {
             } catch (GameMechanicException | InvalidInputException e) {
                 Terminal.printError(e.getMessage());
             }
+            input = Terminal.readLine();
         }
+            
     }
     
     /**
@@ -74,7 +77,8 @@ public class Main {
      */
     
     private static List<CommandInterface> initializeAllCommands(final DawnGameExecutor gameExecutor) {
-        return Arrays.asList(new MoveCommand(gameExecutor), 
+        return Arrays.asList(
+                new MoveCommand(gameExecutor), 
                 new PlaceCommand(gameExecutor), 
                 new PrintCommand(gameExecutor),
                 new ResetCommand(gameExecutor), 

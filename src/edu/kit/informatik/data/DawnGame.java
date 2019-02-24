@@ -25,15 +25,15 @@ public class DawnGame {
     private static final int DAWN_NUMBER = 7;
     private static final int MIN_MC_LENGTH = 2;
     private static final int PHASE_IS_DONE = 7; // abstract round that represents the end of a stage/phase.
-    private int currentroll;
-    private int currentpiecelength;
-    private boolean hasrolled;
-    private boolean hasplaced;
+    private int currentRoll;
+    private int currentPieceLength;
+    private boolean hasRolled;
+    private boolean hasPlaced;
     private Board board;
-    private Map<Integer, Piece> firstset; // First set for Mission Control.
-    private Map<Integer, Piece> secondset; // Second set for Mission Control.
+    private Map<Integer, Piece> firstSet; // First set for Mission Control.
+    private Map<Integer, Piece> secondSet; // Second set for Mission Control.
     private Queue<GameStage> stages;
-    private List<GameStage> finishedstages; // Once a stage is finished, it is added to this list.
+    private List<GameStage> finishedStages; // Once a stage is finished, it is added to this list.
     
     /**
      * Constructor for a game and all its components.
@@ -55,21 +55,21 @@ public class DawnGame {
         Piece dawn = new Piece(DAWN_NUMBER);
         Piece vesta = new Piece('V', "Vesta");
         Piece ceres = new Piece('C', "Ceres");
-        this.firstset = new HashMap<Integer, Piece>();
-        this.secondset = new HashMap<Integer, Piece>();
-        this.firstset.put(two.getLength(), two);
-        this.firstset.put(three.getLength(), three);
-        this.firstset.put(four.getLength(), four);
-        this.firstset.put(five.getLength(), five);
-        this.firstset.put(six.getLength(), six);
-        this.firstset.put(dawn.getLength(), dawn);
-        this.secondset.putAll(firstset);
+        this.firstSet = new HashMap<Integer, Piece>();
+        this.secondSet = new HashMap<Integer, Piece>();
+        this.firstSet.put(two.getLength(), two);
+        this.firstSet.put(three.getLength(), three);
+        this.firstSet.put(four.getLength(), four);
+        this.firstSet.put(five.getLength(), five);
+        this.firstSet.put(six.getLength(), six);
+        this.firstSet.put(dawn.getLength(), dawn);
+        this.secondSet.putAll(firstSet);
         this.stages = new LinkedList<>();
-        this.stages.add(new GameStage(vesta, firstset, 1)); // Phase 1.
-        this.stages.add(new GameStage(ceres, secondset, 2)); // Phase 2.
-        this.finishedstages = new ArrayList<GameStage>();
-        this.hasrolled = false;
-        this.hasplaced = false;
+        this.stages.add(new GameStage(vesta, firstSet, 1)); // Phase 1.
+        this.stages.add(new GameStage(ceres, secondSet, 2)); // Phase 2.
+        this.finishedStages = new ArrayList<GameStage>();
+        this.hasRolled = false;
+        this.hasPlaced = false;
     }
     
     /**
@@ -101,10 +101,10 @@ public class DawnGame {
     }
 
     /**
-     * @return the currentroll
+     * @return the current roll.
      */
-    public int getCurrentroll() {
-        return currentroll;
+    public int getCurrentRoll() {
+        return currentRoll;
     }
 
     /**
@@ -115,17 +115,17 @@ public class DawnGame {
     }
 
     /**
-     * @param currentpiecelength the currentpiecelength to set
+     * @param currentPieceLength the current piece length to set.
      */
-    public void setCurrentpiecelength(int currentpiecelength) {
-        this.currentpiecelength = currentpiecelength;
+    public void setCurrentpiecelength(int currentPieceLength) {
+        this.currentPieceLength = currentPieceLength;
     }
 
     /**
-     * @param currentroll the currentroll to set
+     * @param currentRoll the current roll to set.
      */
-    public void setCurrentroll(int currentroll) {
-        this.currentroll = currentroll;
+    public void setCurrentRoll(int currentRoll) {
+        this.currentRoll = currentRoll;
     }
 
     /**
@@ -137,31 +137,31 @@ public class DawnGame {
     }
     
     /**
-     * @return the hasrolled
+     * @return if the die has been rolled.
      */
     public boolean hasRolled() {
-        return hasrolled;
+        return hasRolled;
     }
 
     /**
-     * @return the hasplaced
+     * @return if the Mission Control piece has been placed.
      */
     public boolean hasPlaced() {
-        return hasplaced;
+        return hasPlaced;
     }
     
     /**
-     * @return the stages
+     * @return the stages.
      */
     public Queue<GameStage> getStages() {
         return stages;
     }
 
     /**
-     * @return the finishedstages
+     * @return the finished stages.
      */
     public List<GameStage> getFinishedstages() {
-        return finishedstages;
+        return finishedStages;
     }
     
     /**
@@ -169,7 +169,7 @@ public class DawnGame {
      * @return Checks if the game is over.
      */
     public boolean isGameOver() {
-        return finishedstages.size() == 2;
+        return finishedStages.size() == 2;
     }
     
     /**
@@ -189,7 +189,7 @@ public class DawnGame {
      * @return The current Mission Control piece length.
      */
     public int getCurrentpiecelength() {
-        return currentpiecelength;
+        return currentPieceLength;
     }
    
     /**
@@ -197,7 +197,7 @@ public class DawnGame {
      * @param bool true if the die has been rolled.
      */
     public void setRolled(boolean bool) {
-        this.hasrolled = bool;
+        this.hasRolled = bool;
     }
     
     /**
@@ -205,7 +205,7 @@ public class DawnGame {
      * @param bool true if the Mission Control piece has been placed.
      */
     public void setPlaced(boolean bool) {
-        this.hasplaced = bool;
+        this.hasPlaced = bool;
     }
     
     /**

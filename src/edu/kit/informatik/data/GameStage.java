@@ -12,38 +12,38 @@ import java.util.Map;
 
 public class GameStage {
 
-    private int stagenumber;
-    private int currentround;
-    private boolean vcplaced; // Tracks if a Nature piece has been placed.
-    private Piece naturepiece;
-    private Map<Integer, Piece> setofmcpieces;
-    private Map<Integer, Boolean> mcplaced;
+    private int stageNumber;
+    private int currentRound;
+    private boolean vcPlaced; // Tracks if a Nature piece has been placed.
+    private Piece naturePiece;
+    private Map<Integer, Piece> setofMCPieces;
+    private Map<Integer, Boolean> mcPlaced;
     
     /**
      * Constructor for a game stage (either the first phase or the second).
-     * @param naturepiece Either Vesta or Ceres depending on which game stage.
-     * @param setofmcpieces The set of Mission Control pieces.
-     * @param stagenumber Number that represents which stage.
+     * @param naturePiece Either Vesta or Ceres depending on which game stage.
+     * @param setofMCPieces The set of Mission Control pieces.
+     * @param stageNumber Number that represents which stage.
      */
     
-    public GameStage(Piece naturepiece, Map<Integer, Piece> setofmcpieces, int stagenumber) {
-        this.naturepiece = naturepiece;
-        this.setofmcpieces = setofmcpieces;
-        this.stagenumber = stagenumber;
-        this.mcplaced = new HashMap<Integer, Boolean>();
+    public GameStage(Piece naturePiece, Map<Integer, Piece> setofMCPieces, int stageNumber) {
+        this.naturePiece = naturePiece;
+        this.setofMCPieces = setofMCPieces;
+        this.stageNumber = stageNumber;
+        this.mcPlaced = new HashMap<Integer, Boolean>();
         
         /**
          * The point of this is to keep track of the Mission Control pieces (i.e. if they are on the board or not).
          * The integer keys represent each piece (i.e. 2 for the piece of length 2).
          */
         
-        mcplaced.put(2, false);
-        mcplaced.put(3, false);
-        mcplaced.put(4, false);
-        mcplaced.put(5, false);
-        mcplaced.put(6, false);
-        mcplaced.put(7, false);
-        this.currentround = 1;
+        mcPlaced.put(2, false);
+        mcPlaced.put(3, false);
+        mcPlaced.put(4, false);
+        mcPlaced.put(5, false);
+        mcPlaced.put(6, false);
+        mcPlaced.put(7, false);
+        this.currentRound = 1;
     }
     
     /**
@@ -52,7 +52,7 @@ public class GameStage {
      */
     
     public boolean isVCPlaced() {
-        return vcplaced;
+        return vcPlaced;
     }
     
     /**
@@ -60,7 +60,7 @@ public class GameStage {
      */
     
     public void placeVC() {
-        this.vcplaced = true;
+        this.vcPlaced = true;
     }
     
     /**
@@ -69,7 +69,7 @@ public class GameStage {
      */
     
     public Piece getNaturePiece() {
-        return naturepiece;
+        return naturePiece;
     }
     
     /**
@@ -78,7 +78,7 @@ public class GameStage {
      */
     
     public Map<Integer, Piece> getMCPieces() {
-        return setofmcpieces;
+        return setofMCPieces;
     }
     
     /**
@@ -87,7 +87,7 @@ public class GameStage {
      */
     
     public int getStageNumber() {
-        return stagenumber;
+        return stageNumber;
     }
     
     /**
@@ -97,7 +97,7 @@ public class GameStage {
      */
     
     public boolean isMCPlaced(int length) {
-        return mcplaced.get(length);
+        return mcPlaced.get(length);
     }
     
     /**
@@ -106,7 +106,7 @@ public class GameStage {
      */
     
     public void placeMC(int length) {
-        mcplaced.put(length, true);
+        mcPlaced.put(length, true);
     }
     
     /**
@@ -114,7 +114,7 @@ public class GameStage {
      */
     
     public void goToNextRound() {
-        currentround++;
+        currentRound++;
     }
     
     /**
@@ -123,6 +123,6 @@ public class GameStage {
      */
     
     public int getRound() {
-        return currentround;
+        return currentRound;
     }
 }

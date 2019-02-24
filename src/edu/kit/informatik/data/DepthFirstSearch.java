@@ -31,7 +31,7 @@ public class DepthFirstSearch {
     
     private static int traverse(Cell source, boolean[][] visited) {
         visited[source.getMCoord()][source.getNCoord()] = true;
-        int visitedCells = 0; // Keeps track of many visited cells were visited.
+        int visitedCells = 0; // Keeps track of many cells were visited.
         
         for (Cell neighbor : source.getNeighbors()) {
             if (!neighbor.isOccupied() && !visited[neighbor.getMCoord()][neighbor.getNCoord()]) {

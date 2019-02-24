@@ -99,9 +99,9 @@ public class DawnGameExecutor {
           throw new GameMechanicException("you have already rolled.");
       }
       if (symbol.equals("DAWN")) {
-          game.setCurrentroll(DawnGame.getDawnNumber());
+          game.setCurrentRoll(DawnGame.getDawnNumber());
       } else {
-          game.setCurrentroll(Integer.parseInt(symbol));
+          game.setCurrentRoll(Integer.parseInt(symbol));
       }
       return StringList.OK.toString();
     }
@@ -136,7 +136,7 @@ public class DawnGameExecutor {
                 throw new InvalidInputException("either the tail or head of the DAWN piece must be on the "
                         + "board for a valid placement.");
             }
-            if (length > 7) {
+            if (length > DawnGame.getDawnNumber()) {
                 throwInvalidCoordinate(" This piece doesn't exist.");
             }
             throwInvalidCoordinate("");
@@ -147,7 +147,7 @@ public class DawnGameExecutor {
         if (headmcomponent != tailmcomponent && headncomponent != tailncomponent) {
             throwInvalidCoordinate(" Only horizontal or vertical placement is allowed.");
          }
-        if (!getPossiblePlacements(game.getCurrentroll()).contains(length)) {
+        if (!getPossiblePlacements(game.getCurrentRoll()).contains(length)) {
             throwInvalidCoordinate(" This placement is not possible.");
         }
         if (length == DawnGame.getDawnNumber() && (!game.getBoard().isInBounds(headmcomponent, headncomponent) 
@@ -261,7 +261,7 @@ public class DawnGameExecutor {
         int head;
         int tail;
         Piece dawn = game.getCurrentGameStage().getMCPieces().get(DawnGame.getDawnNumber());
-        boolean ishorizontal = false;
+        boolean isHorizontal = false;
       
         // This is to check if the piece is to be placed horizontally or vertically.
         
@@ -269,7 +269,7 @@ public class DawnGameExecutor {
             head = headncomponent;
             tail = tailncomponent;
             commoncomp = headmcomponent; // With horizontal placement, the m-coordinate stays the same.
-            ishorizontal = true;
+            isHorizontal = true;
         } else { // vertically placed.
             head = headmcomponent;
             tail = tailmcomponent;
@@ -282,19 +282,19 @@ public class DawnGameExecutor {
                 largercomp = head;
                 smallercomp = tail;
             }
-            if (ishorizontal) {
+            if (isHorizontal) {
                 if (largercomp >= DawnGame.getBoardWidth()) { // largercomp is outside the board.
-                    if (!isOccupiedIterator(smallercomp, DawnGame.getBoardWidth() - 1, commoncomp, ishorizontal)
+                    if (!isOccupiedIterator(smallercomp, DawnGame.getBoardWidth() - 1, commoncomp, isHorizontal)
                             .isEmpty()) {
                         int smallerWidth = DawnGame.getBoardWidth() - 1;
-                        throwOccupied(isOccupiedIterator(smallercomp, smallerWidth, commoncomp, ishorizontal));
+                        throwOccupied(isOccupiedIterator(smallercomp, smallerWidth, commoncomp, isHorizontal));
                     } // Iterate from the smallercomp till the width - 1.
                     for (int i = smallercomp; i < DawnGame.getBoardWidth(); i++) {
                         game.getBoard().getCell(commoncomp, i).setPiece(dawn); 
                     }
                 } else { // largercomp is on the board, in which case the smallercomp is negative
-                    if (!isOccupiedIterator(0, largercomp, commoncomp, ishorizontal).isEmpty()) {
-                        throwOccupied(isOccupiedIterator(0, largercomp, commoncomp, ishorizontal));
+                    if (!isOccupiedIterator(0, largercomp, commoncomp, isHorizontal).isEmpty()) {
+                        throwOccupied(isOccupiedIterator(0, largercomp, commoncomp, isHorizontal));
                     }
                     for (int i = 0; i <= largercomp; i++) {
                         game.getBoard().getCell(commoncomp, i).setPiece(dawn);
@@ -302,17 +302,17 @@ public class DawnGameExecutor {
                 }
             } else { // Same thing as above here but going vertically.
                 if (largercomp >= DawnGame.getBoardHeight()) { // The largercomp is outside the board.
-                    if (!isOccupiedIterator(smallercomp, DawnGame.getBoardHeight() - 1, commoncomp, ishorizontal)
+                    if (!isOccupiedIterator(smallercomp, DawnGame.getBoardHeight() - 1, commoncomp, isHorizontal)
                             .isEmpty()) {
                         int smallerHeight = DawnGame.getBoardHeight() - 1;
-                        throwOccupied(isOccupiedIterator(smallercomp, smallerHeight, commoncomp, ishorizontal));
+                        throwOccupied(isOccupiedIterator(smallercomp, smallerHeight, commoncomp, isHorizontal));
                     } // Iterate from the smallercomp till the height - 1.
                     for (int i = smallercomp; i < DawnGame.getBoardHeight(); i++) {
                         game.getBoard().getCell(i, commoncomp).setPiece(dawn); 
                     }
                 } else {
-                    if (!isOccupiedIterator(0, largercomp, commoncomp, ishorizontal).isEmpty()) {
-                        throwOccupied(isOccupiedIterator(0, largercomp, commoncomp, ishorizontal));
+                    if (!isOccupiedIterator(0, largercomp, commoncomp, isHorizontal).isEmpty()) {
+                        throwOccupied(isOccupiedIterator(0, largercomp, commoncomp, isHorizontal));
                     }
                     for (int i = 0; i <= largercomp; i++) {
                         game.getBoard().getCell(i, commoncomp).setPiece(dawn);
@@ -342,13 +342,13 @@ public class DawnGameExecutor {
         if (!game.hasPlaced()) {
             throw new GameMechanicException("you must place a Mission Control piece before moving a Nature piece.");
         }
-        String[] coordinatesplit = coordinate.split(StringList.COMPONENT_SEPARATOR.toString());
-        int mdestination = Integer.parseInt(coordinatesplit[0]);
-        int ndestination = Integer.parseInt(coordinatesplit[1]);
-        Piece naturepiece = game.getCurrentGameStage().getNaturePiece();
-        Cell cellofnaturepiece = game.getBoard().getCellofPiece(naturepiece);
-        cellofnaturepiece.setPiece(null);
-        game.getBoard().getCell(mdestination, ndestination).setPiece(naturepiece);
+        String[] coordinateSplit = coordinate.split(StringList.COMPONENT_SEPARATOR.toString());
+        int mdestination = Integer.parseInt(coordinateSplit[0]);
+        int ndestination = Integer.parseInt(coordinateSplit[1]);
+        Piece naturePiece = game.getCurrentGameStage().getNaturePiece();
+        Cell cellofNaturePiece = game.getBoard().getCellofPiece(naturePiece);
+        cellofNaturePiece.setPiece(null);
+        game.getBoard().getCell(mdestination, ndestination).setPiece(naturePiece);
     }
     
     /**
@@ -364,20 +364,20 @@ public class DawnGameExecutor {
             throws GameMechanicException, InvalidInputException {
         int morigin = 0;
         int norigin = 0;
-        Cell origincell;
+        Cell originCell;
         if (origin.equals("nature")) {
-            origincell = game.getBoard().getCellofPiece(game.getCurrentGameStage().getNaturePiece());
-            morigin = origincell.getMCoord();
-            norigin = origincell.getNCoord();
+            originCell = game.getBoard().getCellofPiece(game.getCurrentGameStage().getNaturePiece());
+            morigin = originCell.getMCoord();
+            norigin = originCell.getNCoord();
         } else {
-            String[] originsplit = origin.split(";");
-            morigin = Integer.parseInt(originsplit[0]);
-            norigin = Integer.parseInt(originsplit[1]);
-            origincell = game.getBoard().getCell(morigin, norigin);
+            String[] originSplit = origin.split(";");
+            morigin = Integer.parseInt(originSplit[0]);
+            norigin = Integer.parseInt(originSplit[1]);
+            originCell = game.getBoard().getCell(morigin, norigin);
         }
-        String[] destinationsplit = destination.split(";");
-        int mdestination = Integer.parseInt(destinationsplit[0]);
-        int ndestination = Integer.parseInt(destinationsplit[1]);
+        String[] destinationSplit = destination.split(";");
+        int mdestination = Integer.parseInt(destinationSplit[0]);
+        int ndestination = Integer.parseInt(destinationSplit[1]);
         if (game.isGameOver()) {
             throwGameOver();
         }
@@ -398,7 +398,7 @@ public class DawnGameExecutor {
             throw new GameMechanicException("a piece occupies " 
                 + mdestination + ";" + ndestination + " , so you cannot move there.");
         }
-       return isMovePossible(mdestination, ndestination, origincell);
+       return isMovePossible(mdestination, ndestination, originCell);
     }
     
     /**
@@ -410,33 +410,33 @@ public class DawnGameExecutor {
         if (!game.isGameOver()) {
             throw new GameMechanicException("you cannot view the result if the game is not over yet.");
         }
-        int freespacesceres = 0;
-        int freespacesvesta = 0;
+        int freeSpacesCeres = 0;
+        int freeSpacesVesta = 0;
         GameStage first = game.getFinishedstages().get(0);
         GameStage second = game.getFinishedstages().get(1);
         Cell vesta = game.getBoard().getCellofPiece(first.getNaturePiece());
         Cell ceres = game.getBoard().getCellofPiece(second.getNaturePiece());
-        freespacesceres = DepthFirstSearch.getFreeSpaces(game.getBoard(), ceres);
-        freespacesvesta = DepthFirstSearch.getFreeSpaces(game.getBoard(), vesta);
-        if (freespacesceres > freespacesvesta) { // Applying the formula from the question.
-            return freespacesceres + (freespacesceres - freespacesvesta);
-        } else if (freespacesceres < freespacesvesta) {
-            return freespacesvesta + (freespacesvesta - freespacesceres);
+        freeSpacesCeres = DepthFirstSearch.getFreeSpaces(game.getBoard(), ceres);
+        freeSpacesVesta = DepthFirstSearch.getFreeSpaces(game.getBoard(), vesta);
+        if (freeSpacesCeres > freeSpacesVesta) { // Applying the formula from the question.
+            return freeSpacesCeres + (freeSpacesCeres - freeSpacesVesta);
+        } else if (freeSpacesCeres < freeSpacesVesta) {
+            return freeSpacesVesta + (freeSpacesVesta - freeSpacesCeres);
         } else {
             return 0; // If F(V) = F(C)
         }
     }
 
-    private boolean isMovePossible(int mdestination, int ndestination, Cell cellofnaturepiece) {
-        int mpiece = cellofnaturepiece.getMCoord();
-        int npiece = cellofnaturepiece.getNCoord();
+    private boolean isMovePossible(int mdestination, int ndestination, Cell cellofNaturePiece) {
+        int mpiece = cellofNaturePiece.getMCoord();
+        int npiece = cellofNaturePiece.getNCoord();
         int mdifference = Math.abs(mpiece - mdestination);
         int ndifference = Math.abs(npiece - ndestination);
         return (mdifference == 1) ^ (ndifference == 1); // A move can only be horizontal or vertical and only one step.
     }
     
-    private void throwInvalidCoordinate(String extramessage) throws InvalidInputException {
-        throw new InvalidInputException(StringList.INVALID_COORDINATES.toString() + extramessage);
+    private void throwInvalidCoordinate(String extraMessage) throws InvalidInputException {
+        throw new InvalidInputException(StringList.INVALID_COORDINATES.toString() + extraMessage);
     }
     
     /**
