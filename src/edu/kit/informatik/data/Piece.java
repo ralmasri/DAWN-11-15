@@ -2,6 +2,8 @@ package edu.kit.informatik.data;
 
 import java.util.Objects;
 
+import edu.kit.informatik.util.StringList;
+
 
 /**
  * Class that represents a piece.
@@ -11,6 +13,9 @@ import java.util.Objects;
  */
 
 public class Piece {
+    
+    private static final char MISSION_CONTROL_SYMBOL = '+';
+    private static final int LENGTH_OF_NATURE_PIECE = 1;
 
     /**
      * Single character symbol that represents a piece.
@@ -37,10 +42,10 @@ public class Piece {
      */
     
     public Piece(int length) {
-        this.symbol = '+';
+        this.symbol = MISSION_CONTROL_SYMBOL;
         this.length = length;
-        if (length == 7) {
-            this.name = "DAWN";
+        if (length == DawnGame.getDawnNumber()) {
+            this.name = StringList.DAWN.toString();
         } else {
             this.name = String.valueOf(length);
         }
@@ -57,7 +62,7 @@ public class Piece {
     public Piece(char symbol, String name) {
         this.symbol = symbol;
         this.name = name;
-        this.length = 1;
+        this.length = LENGTH_OF_NATURE_PIECE;
     }
     
     /**
@@ -89,6 +94,9 @@ public class Piece {
     
     @Override
     public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
         if (getClass().equals(obj.getClass())) {
             final Piece otherPiece = (Piece) obj;
             return (this.symbol == otherPiece.symbol 

@@ -1,6 +1,7 @@
 package edu.kit.informatik.ui;
 
-import edu.kit.informatik.exceptions.*;
+import edu.kit.informatik.exceptions.GameMechanicException;
+import edu.kit.informatik.exceptions.InvalidInputException;
 
 /**
  * Interface for commands. Includes the execution method and a Getter for the name of the command.
@@ -16,15 +17,16 @@ public interface CommandInterface {
      * @return The name of the command.
      */
     
-    String getNameofCommand();  
+    String getNameofCommand();
+    
     
     /**
      * Runs the command.
      * @param parameters The parameters of the command.
-     * @throws InvalidInputException If the input is not in correct format.
+     * @return The output.
+     * @throws InvalidInputException If the input is not in the correct format.
      * @throws GameMechanicException If the input breaks the game's rules.
      */
     
-    void run(String parameters) throws InvalidInputException, GameMechanicException;
-
+    String run(String parameters) throws InvalidInputException, GameMechanicException;
 }

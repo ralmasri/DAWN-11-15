@@ -15,9 +15,14 @@ public enum StringList {
     OK("OK"),
     
     /**
-     * The pattern of possible rolls.
+     * The regex of possible rolls.
      */
-    ROLL_PATTERN("[2-6]|DAWN"),
+    ROLL_REGEX("[2-6]|DAWN"),
+    
+    /**
+     * Name of piece of length 7.
+     */
+    DAWN("DAWN"),
     
     /**
      * Separates two coordinates.
@@ -30,19 +35,19 @@ public enum StringList {
     COMPONENT_SEPARATOR(";"),
     
     /**
-     * The pattern of possible coordinate inputs.
+     * The regex of possible coordinate inputs.
      */
-    COORDINATE_PATTERN("([0-9]|10)(;)([0-9]|[1][1-4])"),
+    COORDINATE_REGEX("([0-9]|10)(;)([0-9]|[1][1-4])"),
     
     /**
-     * The pattern of possible m-components for a DAWN piece.
+     * The regex of possible m-components for the place command.
      */
-    DAWN_MCOORDINATE_PATTERN("(-[1-6]|[0-9]|1[0-6])"),
+    PLACE_MCOMPONENT("(-[1-6]|[0-9]|1[0-6])"),
     
     /**
-     * The pattern of possible n-components for a DAWN piece.
+     * The regex of possible n-components for the place command.
      */
-    DAWN_NCOORDINATE_PATTERN("(-[1-6]|[0-9]|1[0-9]|20)"),
+    PLACE_NCOMPONENT("(-[1-6]|[0-9]|1[0-9]|20)"),
     
     /**
      * Separates the command and its parameters.

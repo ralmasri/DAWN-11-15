@@ -1,6 +1,5 @@
 package edu.kit.informatik.commands;
 
-import edu.kit.informatik.Terminal;
 import edu.kit.informatik.data.Cell;
 import edu.kit.informatik.data.DawnGame;
 import edu.kit.informatik.data.DawnGameExecutor;
@@ -33,8 +32,12 @@ public class PlaceCommand extends Command {
     }
 
     @Override
-    public void run(String parameters) throws InvalidInputException, GameMechanicException {
+    public String run(String parameters) throws InvalidInputException, GameMechanicException {
         InputChecker.checkPlace(parameters);
+        DawnGame game = gameExecutor.getGame();
+        if (game.isGameOver()) {
+            gameExecutor.throwGameOver();
+        }
         String[] coordinates = parameters.split(StringList.COORDINATE_SEPARATOR.toString());
         String start = coordinates[0];
         String end = coordinates[1];
@@ -44,17 +47,17 @@ public class PlaceCommand extends Command {
         int startn = Integer.parseInt(startsplit[1]);
         int endm = Integer.parseInt(endsplit[0]);
         int endn = Integer.parseInt(endsplit[1]);
-        Terminal.printLine(gameExecutor.place(startm, startn, endm, endn));
-        Cell cellofnaturepiece = gameExecutor.getGame().getBoard()
-                .getCellofPiece(gameExecutor.getGame().getCurrentGameStage().getNaturePiece());
-        if (gameExecutor.getGame().areThereNoFreeSpaces(cellofnaturepiece)) {
-                gameExecutor.getGame().setRolled(false);
-                gameExecutor.getGame().getCurrentGameStage().goToNextRound();
-                if (gameExecutor.getGame().getCurrentGameStage().getRound() == DawnGame.getPhaseIsDone()) {
-                    gameExecutor.getGame().getFinishedstages().add(gameExecutor.getGame().getCurrentGameStage());
-                    gameExecutor.getGame().getStages().remove();
+        gameExecutor.place(startm, startn, endm, endn);
+        Cell cellofnaturepiece = game.getBoard()
+                .getCellofPiece(game.getCurrentGameStage().getNaturePiece());
+        if (game.areThereNoFreeSpaces(cellofnaturepiece)) { // When (iii) is skipped.
+                game.setRolled(false); // Set the roll to false, because a round now consists of roll and place.
+                game.getCurrentGameStage().goToNextRound();
+                if (game.isStageOver()) {
+                    game.goToNextStage();
                 }
         }
-        gameExecutor.getGame().setPlaced(true);
+        game.setPlaced(true);
+        return StringList.OK.toString();
     }
 }

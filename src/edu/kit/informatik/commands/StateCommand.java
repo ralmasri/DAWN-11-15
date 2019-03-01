@@ -1,12 +1,10 @@
 package edu.kit.informatik.commands;
 
-import edu.kit.informatik.Terminal;
-
-
-
 import edu.kit.informatik.data.DawnGameExecutor;
 import edu.kit.informatik.ui.InputChecker;
-import edu.kit.informatik.exceptions.*;
+import edu.kit.informatik.util.StringList;
+import edu.kit.informatik.exceptions.InvalidInputException;
+import edu.kit.informatik.exceptions.GameMechanicException;
 
 /**
  * Class the represents the state command. 
@@ -34,11 +32,12 @@ public class StateCommand extends Command {
     }
     
     @Override
-    public void run(String parameters) throws InvalidInputException, GameMechanicException {
+    public String run(String parameters) throws InvalidInputException, GameMechanicException {
         InputChecker.checkCoordinate(parameters);
-        String[] inputsplit = parameters.split(";");
+        String[] inputsplit = parameters.split(StringList.COMPONENT_SEPARATOR.toString());
         int mcomponent = Integer.parseInt(inputsplit[0]);
         int ncomponent = Integer.parseInt(inputsplit[1]);
-        Terminal.printLine(gameExecutor.state(mcomponent, ncomponent));
+        return gameExecutor.state(mcomponent, ncomponent);
     }
+
 }

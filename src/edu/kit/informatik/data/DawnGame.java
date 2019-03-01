@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import edu.kit.informatik.exceptions.GameMechanicException;
+import edu.kit.informatik.util.StringList;
 
 /**
  * Represents the KIT version of DAWN 11/15.
@@ -20,20 +21,51 @@ import edu.kit.informatik.exceptions.GameMechanicException;
  */
 public class DawnGame {
 
+    /**
+     * The height of the board.
+     */
     private static final int BOARD_HEIGHT = 11;
+    
+    /**
+     * The width of the board.
+     */
     private static final int BOARD_WIDTH = 15;
+    
+    /**
+     * Number that represents the DAWN piece.
+     */
     private static final int DAWN_NUMBER = 7;
+    
+    /**
+     * The smallest Mission Control piece.
+     */
     private static final int MIN_MC_LENGTH = 2;
-    private static final int PHASE_IS_DONE = 7; // abstract round that represents the end of a stage/phase.
+    
+    /**
+     * Abstract round that represents the end of a phase.
+     */
+    private static final int PHASE_IS_DONE = 7;
+    
+    /**
+     * The number of steps allowed per move.
+     */
+    private static final int MOVE_STEPS_ALLOWED = 1;
+    
     private int currentRoll;
     private int currentPieceLength;
     private boolean hasRolled;
     private boolean hasPlaced;
     private Board board;
-    private Map<Integer, Piece> firstSet; // First set for Mission Control.
-    private Map<Integer, Piece> secondSet; // Second set for Mission Control.
+    
+    /* * First set of pieces for Mission Control. */
+    private Map<Integer, Piece> firstSet;
+    
+    /** Second set of pieces for Mission Control.*/
+    private Map<Integer, Piece> secondSet; 
     private Queue<GameStage> stages;
-    private List<GameStage> finishedStages; // Once a stage is finished, it is added to this list.
+    
+    /** Once a stage is finished, it is added to this list.*/
+    private List<GameStage> finishedStages;
     
     /**
      * Constructor for a game and all its components.
@@ -137,14 +169,14 @@ public class DawnGame {
     }
     
     /**
-     * @return if the die has been rolled.
+     * @return true if the die has been rolled, otherwise false.
      */
     public boolean hasRolled() {
         return hasRolled;
     }
 
     /**
-     * @return if the Mission Control piece has been placed.
+     * @return true if a Mission Control piece has been placed, otherwise false.
      */
     public boolean hasPlaced() {
         return hasPlaced;
@@ -179,7 +211,7 @@ public class DawnGame {
      */
     public GameStage getCurrentGameStage() throws GameMechanicException {
         if (stages.peek() == null) {
-            DawnGameExecutor.throwGameOver();
+            throw new GameMechanicException(StringList.GAME_OVER.toString());
         }
         return stages.peek();
     }
@@ -209,12 +241,13 @@ public class DawnGame {
     }
     
     /**
-     * Checks if there any free spaces around a piece (so if movement is possible).
+     * Checks if there are any free spaces around a piece (a.k.a if movement is possible).
      * @param cellofnaturepiece The cell of the nature piece.
      * @return true if there aren't any free spaces, otherwise false.
      */
     public boolean areThereNoFreeSpaces(Cell cellofnaturepiece) {
-        return DepthFirstSearch.getFreeSpaces(board, cellofnaturepiece) == 0;
+        FreeSpaces dfs = new FreeSpaces();
+        return dfs.getFreeSpaces(board, cellofnaturepiece) == 0;
     }
 
     /**
@@ -223,5 +256,31 @@ public class DawnGame {
      */
     public static int getPhaseIsDone() {
         return PHASE_IS_DONE;
+    }
+
+    /**
+     * Returns the allowed steps per elementary move.
+     * @return The allowed steps per elementary move.
+     */
+    public static int getMoveStepsAllowed() {
+        return MOVE_STEPS_ALLOWED;
+    }
+    
+    /**
+     * When a stage is over, said stage will be added to finished stages and will be removed from the queue.
+     * @throws GameMechanicException If the game is over.
+     */
+    public void goToNextStage() throws GameMechanicException {
+        finishedStages.add(getCurrentGameStage());
+        stages.remove();
+    }
+    
+    /**
+     * Checks if a stage is over.
+     * @return true if the current round is equal to the abstract end round, otherwise false.
+     * @throws GameMechanicException If game is over.
+     */
+    public boolean isStageOver() throws GameMechanicException {
+        return getCurrentGameStage().getRound() == PHASE_IS_DONE;
     }
 }

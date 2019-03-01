@@ -1,9 +1,5 @@
 package edu.kit.informatik.commands;
 
-import edu.kit.informatik.Terminal;
-
-
-
 import edu.kit.informatik.data.DawnGameExecutor;
 import edu.kit.informatik.exceptions.GameMechanicException;
 import edu.kit.informatik.exceptions.InvalidInputException;
@@ -34,11 +30,15 @@ public class SetvcCommand extends Command {
     }
 
     @Override
-    public void run(String parameters) throws InvalidInputException, GameMechanicException {
+    public String run(String parameters) throws InvalidInputException, GameMechanicException {
         InputChecker.checkCoordinate(parameters);
+        if (gameExecutor.getGame().isGameOver()) {
+            gameExecutor.throwGameOver();
+        }
         String[] inputsplit = parameters.split(StringList.COMPONENT_SEPARATOR.toString());
         int mcomponent = Integer.parseInt(inputsplit[0]);
         int ncomponent = Integer.parseInt(inputsplit[1]);
-        Terminal.printLine(gameExecutor.setVC(mcomponent, ncomponent));
+        gameExecutor.setVC(mcomponent, ncomponent);
+        return StringList.OK.toString();
     }
 }

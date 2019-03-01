@@ -1,7 +1,5 @@
 package edu.kit.informatik.commands;
 
-import edu.kit.informatik.Terminal;
-
 import edu.kit.informatik.data.Cell;
 import edu.kit.informatik.data.DawnGame;
 import edu.kit.informatik.data.DawnGameExecutor;
@@ -36,7 +34,7 @@ public class MoveCommand extends Command {
      * @return The number of colons in the string.
      */
     
-    private static int getCountofColon(String str) {
+    private int getCountofColon(String str) {
         int count = 0;
 
         for (int i = 0; i < str.length(); i++)
@@ -46,36 +44,22 @@ public class MoveCommand extends Command {
 
         return count;
     }
-
-    @Override
-    public String getNameofCommand() {
-        return "move";
-    }
     
     /**
-     * Since the move method only represents one elementary step, this run method handles the logic for
-     * multiple moves.
+     * This method makes sure that all the moves given by a user are valid.
+     * @param parameters The moves.
+     * @param nature The current Nature piece.
+     * @throws InvalidInputException Invalid move to certain position.
+     * @throws GameMechanicException  If the game is over, if the move is diagonal or if the destination is occupied.
      */
-    @Override
-    public void run(String parameters) throws InvalidInputException, GameMechanicException {
-        if (!gameExecutor.getGame().hasPlaced()) {
-            throw new GameMechanicException("you must first place a Mission Control piece before moving.");
-        }
-        InputChecker.checkMove(parameters, gameExecutor.getGame().getCurrentpiecelength() - 1);
-        int coordinateCount = getCountofColon(parameters) + 1;
-        String[] inputSplit = parameters.split(StringList.COORDINATE_SEPARATOR.toString());
+    private void checkMovesValidity(String parameters, Piece nature) 
+            throws InvalidInputException, GameMechanicException {
         String origin = "";
-        Piece nature = gameExecutor.getGame().getCurrentGameStage().getNaturePiece();
-        Cell cellofNaturePiece = gameExecutor.getGame().getBoard().getCellofPiece(nature);
-        if (gameExecutor.getGame().areThereNoFreeSpaces(cellofNaturePiece)) { // The case where (iii) is skipped.
-            if (!parameters.isEmpty()) {
-                throw new GameMechanicException("a move is not possible, because "
-                        + nature.getName() + " is blocked from all directions.");
-            } 
-        }
+        int coordinateCount = getCountofColon(parameters) + 1; // The colons are less than the number of moves by 1.
+        String[] inputSplit = parameters.split(StringList.COORDINATE_SEPARATOR.toString());
         for (int i = 0; i < coordinateCount; i++) {
             if (i == 0) {
-                origin = "nature"; // The first move has the origin as the Nature piece.
+                origin = nature.getName(); // The first move is from the original position of the Nature piece.
             } else {
                 origin = inputSplit[i - 1]; // Every other move, has the origin as the move parameters before it.
             }
@@ -88,17 +72,46 @@ public class MoveCommand extends Command {
             }
             
         }
+    }
+
+    @Override
+    public String getNameofCommand() {
+        return "move";
+    }
+    
+    /**
+     * Since the move method only represents one elementary step, this run method handles the logic for
+     * multiple moves.
+     */
+    @Override
+    public String run(String parameters) throws InvalidInputException, GameMechanicException {
+        DawnGame game = gameExecutor.getGame();
+        if (game.isGameOver()) {
+            gameExecutor.throwGameOver();
+        }
+        Piece nature = game.getCurrentGameStage().getNaturePiece();
+        Cell cellofNaturePiece = game.getBoard().getCellofPiece(nature);
+        if (game.areThereNoFreeSpaces(cellofNaturePiece)) { // The case where (iii) is skipped.
+            throw new GameMechanicException("a move is not possible, because "
+                    + nature.getName() + " is blocked from all directions.");
+        }
+        if (!game.hasPlaced()) {
+            throw new GameMechanicException("you must first place a Mission Control piece before moving.");
+        }
+        // One less than the piece length, because parser already includes a minimum of one move. 
+        InputChecker.checkMove(parameters, game.getCurrentpiecelength() - 1);
+        checkMovesValidity(parameters, nature);
+        int coordinateCount = getCountofColon(parameters) + 1; // The colons are less than the number of moves by 1.
+        String[] inputSplit = parameters.split(StringList.COORDINATE_SEPARATOR.toString());
         for (int i = 0; i < coordinateCount; i++) { // Executes all the moves.
             gameExecutor.move(inputSplit[i]);
         }
-        gameExecutor.getGame().getCurrentGameStage().goToNextRound();
-        Terminal.printLine(StringList.OK.toString());
-        // When a stage is over.
-        if (gameExecutor.getGame().getCurrentGameStage().getRound() == DawnGame.getPhaseIsDone()) {
-            gameExecutor.getGame().getFinishedstages().add(gameExecutor.getGame().getCurrentGameStage());
-            gameExecutor.getGame().getStages().remove();
+        game.getCurrentGameStage().goToNextRound();
+        if (game.isStageOver()) {
+            game.goToNextStage();
         }
-        gameExecutor.getGame().setPlaced(false);
-        gameExecutor.getGame().setRolled(false);
+        game.setPlaced(false);
+        game.setRolled(false);
+        return StringList.OK.toString();
     } 
 }

@@ -1,4 +1,4 @@
-package edu.kit.informatik.data;
+    package edu.kit.informatik.data;
 
 import edu.kit.informatik.data.Cell;
 
@@ -10,6 +10,11 @@ import edu.kit.informatik.data.Cell;
  */
 
 public class Board {
+    
+    /**
+     * Four in this case because only horizontal or vertical movement is allowed
+     */
+    private static final int NUMBER_OF_DIRECTIONS = 4;
 
     /**
      * Two-dimensional array that represents a matrix of cells.
@@ -73,7 +78,7 @@ public class Board {
      * Getter method for a cell within m,n matrix.
      * @param mcomponent The row component.
      * @param ncomponent The column component.
-     * @return The cell at those specific coordinates if the coordinates are ,
+     * @return The cell at those specific coordinates if the coordinates are valid,
      * otherwise null. 
      */
     
@@ -113,7 +118,8 @@ public class Board {
     }
     
     /**
-     * Generates the neighbors of a cell.
+     * Generates the neighbors of a cell by performing additions to get the north, south, east and west 
+     * neighbors of a cell.
      */
     
     private void makeNeighbors() {
@@ -125,8 +131,8 @@ public class Board {
         
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                for (int x = 0; x < 4; x++) { 
-                    // loops through the array of additions. Four operations because diagonal movement is not allowed.
+                for (int x = 0; x < NUMBER_OF_DIRECTIONS; x++) { 
+                    // loops through the array of additions.
                     Cell cell = new Cell(i + addm[x], j + addn[x]);
                     if (isInBounds(i + addm[x], j + addn[x])) {
                         board[i][j].addNeighborCell(board[cell.getMCoord()][cell.getNCoord()]);
@@ -142,17 +148,17 @@ public class Board {
    
     @Override
     public String toString() {
-        String outcome = "";
+        StringBuilder grid = new StringBuilder();
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
-                outcome += board[i][j].toString();
+                grid.append(board[i][j].toString());
             }
             if (i == board.length - 1) {
                 break;
             }
-            outcome += "\n";
+            grid.append("\n");
         }
-        return outcome;
+        return grid.toString();
     }
     
 }

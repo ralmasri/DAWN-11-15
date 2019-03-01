@@ -1,7 +1,5 @@
 package edu.kit.informatik.commands;
 
-import edu.kit.informatik.Terminal;
-
 import edu.kit.informatik.data.DawnGameExecutor;
 import edu.kit.informatik.exceptions.GameMechanicException;
 import edu.kit.informatik.exceptions.InvalidInputException;
@@ -31,8 +29,8 @@ public class ResetCommand extends Command {
     }
 
     @Override
-    public void run(String parameters) throws InvalidInputException, GameMechanicException {
+    public String run(String parameters) throws InvalidInputException, GameMechanicException {
         gameExecutor.getGame().reset();
-        Terminal.printLine(StringList.OK.toString());
+        return StringList.OK.toString();
     }
 }

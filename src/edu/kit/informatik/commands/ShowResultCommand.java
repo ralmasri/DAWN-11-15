@@ -1,7 +1,5 @@
 package edu.kit.informatik.commands;
 
-import edu.kit.informatik.Terminal;
-
 import edu.kit.informatik.data.DawnGameExecutor;
 import edu.kit.informatik.exceptions.GameMechanicException;
 import edu.kit.informatik.exceptions.InvalidInputException;
@@ -30,7 +28,10 @@ public class ShowResultCommand extends Command {
     }
 
     @Override
-    public void run(String parameters) throws InvalidInputException, GameMechanicException {
-        Terminal.printLine(gameExecutor.showresult());
+    public String run(String parameters) throws InvalidInputException, GameMechanicException {
+        if (!gameExecutor.getGame().isGameOver()) {
+            throw new GameMechanicException("you cannot view the result if the game is not over yet.");
+        }
+        return gameExecutor.showresult();
     }
 }

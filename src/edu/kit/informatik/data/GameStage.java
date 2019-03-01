@@ -42,8 +42,8 @@ public class GameStage {
         mcPlaced.put(4, false);
         mcPlaced.put(5, false);
         mcPlaced.put(6, false);
-        mcPlaced.put(7, false);
-        this.currentRound = 1;
+        mcPlaced.put(7, false); // DAWN piece.
+        this.currentRound = 1; // Starting at round 1.
     }
     
     /**

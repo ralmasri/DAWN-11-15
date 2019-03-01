@@ -16,19 +16,35 @@ import edu.kit.informatik.util.StringList;
 
 public final class InputChecker {
 
-    private static final Pattern COORDINATE_PATTERN = Pattern.compile(StringList.COORDINATE_PATTERN.toString());
-    private static final Pattern SYMBOL_PATTERN = Pattern.compile(StringList.ROLL_PATTERN.toString());
-    private static final Pattern PLACE_PATTERN = Pattern.compile(StringList.DAWN_MCOORDINATE_PATTERN.toString()
+    /**
+     * The pattern for a coordinate.
+     */
+    private static final Pattern COORDINATE_PATTERN = Pattern.compile(StringList.COORDINATE_REGEX.toString());
+    
+    /**
+     * The pattern of allowed roll symbols.
+     */
+    private static final Pattern ROLL_PATTERN = Pattern.compile(StringList.ROLL_REGEX.toString());
+    
+    /**
+     * The pattern for allowed placements. Different from {@link COORDINATE_PATTERN}, 
+     * because out of board placements are allowed.
+     */
+    private static final Pattern PLACE_PATTERN = Pattern.compile(StringList.PLACE_MCOMPONENT.toString()
             + StringList.COMPONENT_SEPARATOR.toString() 
-            + StringList.DAWN_NCOORDINATE_PATTERN.toString() 
+            + StringList.PLACE_NCOMPONENT.toString() 
             + StringList.COORDINATE_SEPARATOR.toString() 
-            + StringList.DAWN_MCOORDINATE_PATTERN.toString()
+            + StringList.PLACE_MCOMPONENT.toString()
             + StringList.COMPONENT_SEPARATOR.toString()
-            + StringList.DAWN_NCOORDINATE_PATTERN.toString());
-    private static final String MULTIPLE_COORDINATE_PATTERN = StringList.COORDINATE_PATTERN.toString() 
+            + StringList.PLACE_NCOMPONENT.toString());
+    
+    /**
+     * The pattern used for multiple coordinates (move).
+     */
+    private static final String MULTIPLE_COORDINATE_PATTERN = StringList.COORDINATE_REGEX.toString() 
             + "(" 
             + StringList.COORDINATE_SEPARATOR.toString() 
-            + StringList.COORDINATE_PATTERN.toString() 
+            + StringList.COORDINATE_REGEX.toString() 
             + "){";
     
     /**
@@ -48,15 +64,15 @@ public final class InputChecker {
     }
     
     /**
-     * Method to check if symbol is in correct format.
+     * Method to check if the symbol for a roll is in correct format.
      * 
      * @param input The symbol to check.
-     * @return The symbol.
+     * @return The roll symbol.
      * @throws InvalidInputException If the symbol is not in the correct format.
      */
     
-    public static String checkSymbol(final String input) throws InvalidInputException {
-        if (!SYMBOL_PATTERN.matcher(input).matches()) {
+    public static String checkRoll(final String input) throws InvalidInputException {
+        if (!ROLL_PATTERN.matcher(input).matches()) {
             throw new InvalidInputException("invalid symbol.");
         }
         return input;
@@ -65,9 +81,12 @@ public final class InputChecker {
     /**
      * Method to check if multiple coordinates are in the correct format and follow game rules.
      * 
+     * It is adjusted based on the length of the last placed piece. Since a piece must move at least once, 
+     * the pattern allows for a minimum of one move and a maximum of the length of the placed piece.
+     * 
      * @param input The moves to check.
-     * @param length The maximum number of allowed moves - 1.
-     * @return The moves.
+     * @param length The maximum number of allowed moves - 1 (a minimum of one move is already in the pattern).
+     * @return The String of destination coordinates.
      * @throws InvalidInputException If the input format is incorrect, 
      * no moves were entered or if more than 7 moves were entered.
      * @throws GameMechanicException If too many moves are entered. 
@@ -77,6 +96,8 @@ public final class InputChecker {
             throws InvalidInputException, GameMechanicException {
         Pattern pattern = Pattern.compile(MULTIPLE_COORDINATE_PATTERN + "0," + String.valueOf(length) + "}");
         if (!pattern.matcher(input).matches()) {
+            // The point of this is to return a unique error message if the user enters too many moves.
+            // i = length + 1 because the user would have entered x moves over the maximum (being 1 + length)
             for (int i = length + 1; i <= DawnGame.getDawnNumber(); i++) {
                 Pattern toolarge = Pattern.compile(MULTIPLE_COORDINATE_PATTERN + String.valueOf(i) + "}");
                 if (toolarge.matcher(input).matches()) {

@@ -11,6 +11,8 @@ import java.util.Objects;
  */
 
 public class Cell {
+    
+    private static final String EMPTY_CELL_SYMBOL = "-";
 
     /**
      * M-component of the cell.
@@ -117,7 +119,7 @@ public class Cell {
     
     @Override
     public String toString() {
-        return piece != null ? String.valueOf(piece.getSymbol()) : "-";
+        return piece != null ? String.valueOf(piece.getSymbol()) : EMPTY_CELL_SYMBOL;
     }
     
     @Override
@@ -127,6 +129,9 @@ public class Cell {
     
     @Override
     public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
         if (getClass().equals(obj.getClass())) {
             final Cell otherCell = (Cell) obj;
             return (this.mcomponent == otherCell.mcomponent && this.ncomponent == otherCell.ncomponent);
