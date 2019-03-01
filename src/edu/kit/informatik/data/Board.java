@@ -1,4 +1,4 @@
-    package edu.kit.informatik.data;
+package edu.kit.informatik.data;
 
 import edu.kit.informatik.data.Cell;
 
@@ -98,9 +98,9 @@ public class Board {
     public Cell getCellofPiece(Piece piece) {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if (board[i][j].getPiece() != null && board[i][j].getPiece().equals(piece)) {
+                if (piece.equals(board[i][j].getPiece())) {
                     return getCell(i, j);
-                } 
+                }
             }
         }
         return null;

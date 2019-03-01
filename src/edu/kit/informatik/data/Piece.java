@@ -94,13 +94,16 @@ public class Piece {
     
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
+        if (this == obj) {
+            return true;
         }
-        if (getClass().equals(obj.getClass())) {
-            final Piece otherPiece = (Piece) obj;
-            return (this.symbol == otherPiece.symbol 
-                    && this.length == otherPiece.length && this.name.equals(otherPiece.name));
+        if (obj != null && getClass() == obj.getClass()) {
+            Piece otherPiece = (Piece) obj;
+            if (symbol == otherPiece.symbol 
+                    && length == otherPiece.length 
+                    && Objects.equals(name, otherPiece.name)) {
+                return true;
+            }
         }
         return false;
     }

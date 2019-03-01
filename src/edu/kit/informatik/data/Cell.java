@@ -129,11 +129,11 @@ public class Cell {
     
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
+        if (this == obj) {
+            return true;
         }
-        if (getClass().equals(obj.getClass())) {
-            final Cell otherCell = (Cell) obj;
+        if (obj != null && getClass().equals(obj.getClass())) {
+            Cell otherCell = (Cell) obj;
             return (this.mcomponent == otherCell.mcomponent && this.ncomponent == otherCell.ncomponent);
         }
         return false;

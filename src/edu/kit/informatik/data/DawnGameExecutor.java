@@ -356,8 +356,9 @@ public class DawnGameExecutor {
      * @param coordinate The coordinate to move the piece to.
      * @throws GameMechanicException If the game is over or a Mission Control piece
      *                               hasn't been placed yet.
+     * @throws InvalidInputException 
      */
-    public void move(String coordinate) throws GameMechanicException {
+    public void move(String coordinate) throws GameMechanicException, InvalidInputException {
         String[] coordinateSplit = coordinate.split(StringList.COMPONENT_SEPARATOR.toString());
         int mdestination = Integer.parseInt(coordinateSplit[0]);
         int ndestination = Integer.parseInt(coordinateSplit[1]);
@@ -435,8 +436,9 @@ public class DawnGameExecutor {
      * 
      * @return The result of the game.
      * @throws GameMechanicException If the game isn't over yet.
+     * @throws InvalidInputException 
      */
-    public String showresult() throws GameMechanicException {
+    public String showresult() throws GameMechanicException, InvalidInputException {
         FreeSpaces dfs = new FreeSpaces();
         GameStage first = game.getFinishedstages().get(0);
         GameStage second = game.getFinishedstages().get(1);

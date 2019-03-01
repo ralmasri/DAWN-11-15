@@ -48,6 +48,9 @@ public class PlaceCommand extends Command {
         int endm = Integer.parseInt(endsplit[0]);
         int endn = Integer.parseInt(endsplit[1]);
         gameExecutor.place(startm, startn, endm, endn);
+        if (game.getCurrentGameStage().getNaturePiece() == null) {
+            throw new InvalidInputException("super strange.");
+        }
         Cell cellofnaturepiece = game.getBoard()
                 .getCellofPiece(game.getCurrentGameStage().getNaturePiece());
         if (game.areThereNoFreeSpaces(cellofnaturepiece)) { // When (iii) is skipped.

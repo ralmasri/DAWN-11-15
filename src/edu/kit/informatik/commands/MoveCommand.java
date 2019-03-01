@@ -89,6 +89,10 @@ public class MoveCommand extends Command {
         if (game.isGameOver()) {
             gameExecutor.throwGameOver();
         }
+        if (!game.getCurrentGameStage().isVCPlaced()) {
+            throw new GameMechanicException("you must first place "
+                    + game.getCurrentGameStage().getNaturePiece().getName() + " before moving.");
+        }
         Piece nature = game.getCurrentGameStage().getNaturePiece();
         Cell cellofNaturePiece = game.getBoard().getCellofPiece(nature);
         if (game.areThereNoFreeSpaces(cellofNaturePiece)) { // The case where (iii) is skipped.
