@@ -1,5 +1,6 @@
 package edu.kit.informatik.data;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -9,41 +10,28 @@ import java.util.Objects;
  * @author Rakan Zeid Al Masri
  *
  */
-
 public class Cell {
     
-    private static final String EMPTY_CELL_SYMBOL = "-";
-
-    /**
-     * M-component of the cell.
-     */
+    /** The symbol for an empty cell. */
+    private static final char EMPTY_CELL_SYMBOL = '-';
     
+    /** M-component of the cell. */
     private int mcomponent;
     
-    /**
-     * N-component of the cell.
-     */
-    
+    /** N-component of the cell. */
     private int ncomponent;
    
-    /**
-     * The piece that occupies this cell or null.
-     */
-    
+    /** The piece that occupies this cell or null. */
     private Piece piece;
     
-    /**
-     * Neighboring cells.
-     */
-    
-    private final LinkedList<Cell> neighborCells;
+    /** Neighboring cells. */
+    private final Collection<Cell> neighborCells;
     
     /**
      * Constructor for a cell when no piece is on it.
      * @param mcomponent The m-component.
      * @param ncomponent The n-component.
      */
-    
     public Cell(int mcomponent, int ncomponent) {
         this.piece = null;
         this.mcomponent = mcomponent;
@@ -55,7 +43,6 @@ public class Cell {
      * Getter method for the m-component.
      * @return The m-component.
      */
-    
     public int getMCoord() {
         return mcomponent;
     }
@@ -64,7 +51,6 @@ public class Cell {
      * Getter method for the n-component.
      * @return The n-component.
      */
-    
     public int getNCoord() {
         return ncomponent;
     }
@@ -73,7 +59,6 @@ public class Cell {
      * Getter method for the piece.
      * @return The piece or null.
      */
-    
     public Piece getPiece() {
         return piece;
     }
@@ -82,7 +67,6 @@ public class Cell {
      * Setter method for position a piece on the cell.
      * @param piece the piece to be placed.
      */
-    
     public void setPiece(Piece piece) {
         this.piece = piece;
     }
@@ -91,7 +75,6 @@ public class Cell {
      * Method to check if a cell has a piece on it.
      * @return true if the cell has a piece on it, otherwise false.
      */
-    
     public boolean isOccupied() {
         return piece != null;
     }
@@ -108,8 +91,7 @@ public class Cell {
      * Gets neighboring cells.
      * @return The neighboring cells.
      */
-    
-    public LinkedList<Cell> getNeighbors() {
+    public Collection<Cell> getNeighbors() {
         return neighborCells;
     }
     
@@ -119,7 +101,7 @@ public class Cell {
     
     @Override
     public String toString() {
-        return piece != null ? String.valueOf(piece.getSymbol()) : EMPTY_CELL_SYMBOL;
+        return piece != null ? String.valueOf(piece.getSymbol()) : String.valueOf(EMPTY_CELL_SYMBOL);
     }
     
     @Override

@@ -1,6 +1,6 @@
 package edu.kit.informatik.commands;
 
-import edu.kit.informatik.data.DawnGameExecutor;
+import edu.kit.informatik.data.DawnGame;
 import edu.kit.informatik.ui.InputChecker;
 import edu.kit.informatik.util.StringList;
 import edu.kit.informatik.exceptions.InvalidInputException;
@@ -8,21 +8,17 @@ import edu.kit.informatik.exceptions.GameMechanicException;
 
 /**
  * Class the represents the state command. 
- * Prints "-" if there is no piece on the cell we are checking, "C" for Ceres piece, "V" for Vesta piece,
- * and "+" for a Mission Control piece.
  * 
  * @author Rakan Zeid Al Masri
  * @version 1.0
  */
-
 public class StateCommand extends Command {
 
     /**
      * Constructor for the command.
      * @param gameExecutor The game from which all methods are called.
      */
-    
-    public StateCommand(final DawnGameExecutor gameExecutor) {
+    public StateCommand(final DawnGame gameExecutor) {
         super(gameExecutor);
     }
     

@@ -8,30 +8,18 @@ import edu.kit.informatik.data.Cell;
  * @author Rakan Zeid Al Masri
  * @version 1.0
  */
-
 public class Board {
     
-    /**
-     * Four in this case because only horizontal or vertical movement is allowed
-     */
+    /** Four in this case because only horizontal or vertical movement is allowed */
     private static final int NUMBER_OF_DIRECTIONS = 4;
 
-    /**
-     * Two-dimensional array that represents a matrix of cells.
-     */
-    
+    /** Two-dimensional array that represents a matrix of cells. */
     private Cell[][] board;
     
-    /**
-     * The width of the board.
-     */
-    
+    /** The width of the board. */
     private int width;
     
-    /**
-     * The height of the board.
-     */
-    
+    /** The height of the board. */
     private int height;
     
     
@@ -40,14 +28,13 @@ public class Board {
      * @param width The width of said board.
      * @param height The height of said board.
      */
-    
     public Board(int height, int width) {
         this.width = width;
         this.height = height;
         this.board = new Cell[height][width];
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                board[i][j] = new Cell(i, j);
+        for (int mcomp = 0; mcomp < height; mcomp++) {
+            for (int ncomp = 0; ncomp < width; ncomp++) {
+                board[mcomp][ncomp] = new Cell(mcomp, ncomp);
             }
         }
         makeNeighbors(); // generates the neighbors.
@@ -81,7 +68,6 @@ public class Board {
      * @return The cell at those specific coordinates if the coordinates are valid,
      * otherwise null. 
      */
-    
     public Cell getCell(int mcomponent, int ncomponent) {
         if (!isInBounds(mcomponent, ncomponent)) {
             return null;
@@ -94,12 +80,12 @@ public class Board {
      * @param piece The piece.
      * @return The cell of that piece.
      */
-    
     public Cell getCellofPiece(Piece piece) {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (piece.equals(board[i][j].getPiece())) {
-                    return getCell(i, j);
+        for (int mcomp = 0; mcomp < height; mcomp++) {
+            for (int ncomp = 0; ncomp < width; ncomp++) {
+                // Iterates through the board until the piece is found.
+                if (piece.equals(board[mcomp][ncomp].getPiece())) {
+                    return getCell(mcomp, ncomp);
                 }
             }
         }
@@ -112,7 +98,6 @@ public class Board {
      * @param n The column coordinate.
      * @return true if the coordinates are correct, otherwise false.
      */
-    
     public boolean isInBounds(int m, int n) {
         return m >= 0 && m < height && n >= 0 && n < width;
     }
@@ -121,21 +106,20 @@ public class Board {
      * Generates the neighbors of a cell by performing additions to get the north, south, east and west 
      * neighbors of a cell.
      */
-    
     private void makeNeighbors() {
         
-        // Array of additions we have to do to get the north, south, east and west neighbors of a cell.
-        
+        // Array of additions we have to do to get the north, south, east and west neighbors of a cell respectively.
         int[] addm = {-1, 1, 0, 0};
         int[] addn = {0, 0, 1, -1};
         
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                for (int x = 0; x < NUMBER_OF_DIRECTIONS; x++) { 
-                    // loops through the array of additions.
-                    Cell cell = new Cell(i + addm[x], j + addn[x]);
-                    if (isInBounds(i + addm[x], j + addn[x])) {
-                        board[i][j].addNeighborCell(board[cell.getMCoord()][cell.getNCoord()]);
+        for (int mcomp = 0; mcomp < height; mcomp++) {
+            for (int ncomp = 0; ncomp < width; ncomp++) {
+             // loops through the array of additions.
+                for (int index = 0; index < NUMBER_OF_DIRECTIONS; index++) { 
+                    Cell cell = new Cell(mcomp + addm[index], ncomp + addn[index]);
+                    // If the neighbor is valid (on the board), then add it.
+                    if (isInBounds(mcomp + addm[index], ncomp + addn[index])) {
+                        board[mcomp][ncomp].addNeighborCell(board[cell.getMCoord()][cell.getNCoord()]);
                     }
                 }
             }
@@ -149,11 +133,12 @@ public class Board {
     @Override
     public String toString() {
         StringBuilder grid = new StringBuilder();
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                grid.append(board[i][j].toString());
+        for (int mcomp = 0; mcomp < board.length; mcomp++) {
+            for (int ncomp = 0; ncomp < board[mcomp].length; ncomp++) {
+                grid.append(board[mcomp][ncomp].toString());
             }
-            if (i == board.length - 1) {
+            // To not add a line break after the last row.
+            if (mcomp == board.length - 1) {
                 break;
             }
             grid.append("\n");

@@ -1,24 +1,22 @@
 package edu.kit.informatik.commands;
 
-import edu.kit.informatik.data.DawnGameExecutor;
+import edu.kit.informatik.data.DawnGame;
 import edu.kit.informatik.exceptions.GameMechanicException;
 import edu.kit.informatik.exceptions.InvalidInputException;
 
 /**
- * Class the represents the show-result command. Prints the result if the game is over.
+ * Class the represents the show-result command.
  * 
  * @author Rakan Zeid Al Masri
  * @version 1.0
  */
-
 public class ShowResultCommand extends Command {
 
     /**
      * Constructor for the command.
      * @param gameExecutor The game from which all methods are called.
      */
-    
-    public ShowResultCommand(DawnGameExecutor gameExecutor) {
+    public ShowResultCommand(DawnGame gameExecutor) {
         super(gameExecutor);
     }
 
@@ -27,6 +25,10 @@ public class ShowResultCommand extends Command {
         return "show-result";
     }
 
+    /**
+     * A player cannot see the result before the game is over, which is why the method checks 
+     * if the game isn't over yet. 
+     */
     @Override
     public String run(String parameters) throws InvalidInputException, GameMechanicException {
         if (!gameExecutor.getGame().isGameOver()) {

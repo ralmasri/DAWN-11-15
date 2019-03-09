@@ -6,7 +6,6 @@ package edu.kit.informatik.exceptions;
  * @author Rakan Zeid Al Masri
  *
  */
-
 public class InvalidInputException extends Exception {
 
     private static final long serialVersionUID = 259442120077715015L;
@@ -17,7 +16,6 @@ public class InvalidInputException extends Exception {
      * 
      * @param message Error message to be shown.
      */
-    
     public InvalidInputException(String message) {
         super(message);
     }

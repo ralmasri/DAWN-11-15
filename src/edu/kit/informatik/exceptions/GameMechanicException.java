@@ -6,7 +6,6 @@ package edu.kit.informatik.exceptions;
  * @author Rakan Zeid Al Masri
  *
  */
-
 public class GameMechanicException extends Exception {
 
     private static final long serialVersionUID = 7606110865706698729L;
@@ -17,7 +16,6 @@ public class GameMechanicException extends Exception {
      * 
      * @param message The error message to be displayed.
      */
-    
     public GameMechanicException(String message) {
         super(message);
     }

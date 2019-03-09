@@ -2,7 +2,7 @@ package edu.kit.informatik.ui;
 
 import java.util.regex.Pattern;
 
-import edu.kit.informatik.data.DawnGame;
+import edu.kit.informatik.data.GameInitializer;
 import edu.kit.informatik.exceptions.GameMechanicException;
 import edu.kit.informatik.exceptions.InvalidInputException;
 import edu.kit.informatik.util.StringList;
@@ -13,17 +13,12 @@ import edu.kit.informatik.util.StringList;
  * @author Rakan Zeid Al Masri
  * @version 1.0
  */
-
 public final class InputChecker {
 
-    /**
-     * The pattern for a coordinate.
-     */
+    /** The pattern for a coordinate. */
     private static final Pattern COORDINATE_PATTERN = Pattern.compile(StringList.COORDINATE_REGEX.toString());
     
-    /**
-     * The pattern of allowed roll symbols.
-     */
+    /** The pattern of allowed roll symbols. */
     private static final Pattern ROLL_PATTERN = Pattern.compile(StringList.ROLL_REGEX.toString());
     
     /**
@@ -38,9 +33,7 @@ public final class InputChecker {
             + StringList.COMPONENT_SEPARATOR.toString()
             + StringList.PLACE_NCOMPONENT.toString());
     
-    /**
-     * The pattern used for multiple coordinates (move).
-     */
+    /** The pattern used for multiple coordinates (move). */
     private static final String MULTIPLE_COORDINATE_PATTERN = StringList.COORDINATE_REGEX.toString() 
             + "(" 
             + StringList.COORDINATE_SEPARATOR.toString() 
@@ -54,7 +47,6 @@ public final class InputChecker {
      * @return The input.
      * @throws InvalidInputException If input is not in the correct format.
      */
-    
     public static String checkCoordinate(final String input) throws InvalidInputException {
         if (!COORDINATE_PATTERN.matcher(input).matches()) {
             throw new InvalidInputException(StringList.INVALID_COORDINATES.toString() 
@@ -70,7 +62,6 @@ public final class InputChecker {
      * @return The roll symbol.
      * @throws InvalidInputException If the symbol is not in the correct format.
      */
-    
     public static String checkRoll(final String input) throws InvalidInputException {
         if (!ROLL_PATTERN.matcher(input).matches()) {
             throw new InvalidInputException("invalid symbol.");
@@ -91,21 +82,21 @@ public final class InputChecker {
      * no moves were entered or if more than 7 moves were entered.
      * @throws GameMechanicException If too many moves are entered. 
      */
-    
     public static String checkMove(final String input, int length) 
             throws InvalidInputException, GameMechanicException {
         Pattern pattern = Pattern.compile(MULTIPLE_COORDINATE_PATTERN + "0," + String.valueOf(length) + "}");
         if (!pattern.matcher(input).matches()) {
             // The point of this is to return a unique error message if the user enters too many moves.
-            // i = length + 1 because the user would have entered x moves over the maximum (being 1 + length)
-            for (int i = length + 1; i <= DawnGame.getDawnNumber(); i++) {
-                Pattern toolarge = Pattern.compile(MULTIPLE_COORDINATE_PATTERN + String.valueOf(i) + "}");
+            // i = length + 1 because the user would have entered x moves over the maximum ( 1 + length)
+            for (int numofMoves = length + 1; numofMoves <= GameInitializer.getDawnNumber(); numofMoves++) {
+                Pattern toolarge = Pattern.compile(MULTIPLE_COORDINATE_PATTERN + String.valueOf(numofMoves) + "}");
                 if (toolarge.matcher(input).matches()) {
                     throw new GameMechanicException("you are only allowed a maximum of "
                             + String.valueOf(length + 1) + " moves and you have entered "
-                            + String.valueOf(i + 1) + " moves.");
+                            + String.valueOf(numofMoves + 1) + " moves.");
                 }
             }
+            // Error message for any other reason.
             throw new InvalidInputException(StringList.INVALID_COORDINATES.toString() 
                     + StringList.COORDINATES_CORRECT_FORMAT.toString());
         }
@@ -121,7 +112,6 @@ public final class InputChecker {
      * @return The coordinates.
      * @throws InvalidInputException If the coordinates are not in the correct format.
      */
-    
     public static String checkPlace(final String input) throws InvalidInputException {
         if (!PLACE_PATTERN.matcher(input).matches()) {
             throw new InvalidInputException(StringList.INVALID_COORDINATES.toString() 
