@@ -8,7 +8,7 @@ Some notes:
 
 They are methods from the Terminal class that KIT provides to us. It was not uploaded here due to copyright.
 
-##Commands:###
+##Commands:##
 * state <m>;<n> : Prints the symbol representing the piece on the cell of coordinates (m,n). '-' for no piece, '+' for a Mission Control piece, 'V' for Vesta and 'C' for Ceres.
 
 * print : Prints the board as a grid represented by the aforementioned symbols.
