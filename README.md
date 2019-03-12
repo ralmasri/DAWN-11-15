@@ -17,7 +17,7 @@ They are methods from the Terminal class that KIT provides to us. It was not upl
   
 * roll symbol : Rolls the die.
   
-* place x;y:m:n : Places a Mission Control piece either horizontally or vertically between cells (x,y) and (m,n).
+* place x;y:m;n : Places a Mission Control piece either horizontally or vertically between cells (x,y) and (m,n).
   
 * move m;n ... : Moves the current Nature piece some amount of moves. Each move is one elementary step (horizontal or vertical).
 
