@@ -8,7 +8,7 @@ import java.util.Objects;
  * Represents a cell on the board and a String representation of said cell.
  * 
  * @author Rakan Zeid Al Masri
- *
+ * @version 1.0
  */
 public class Cell {
     
