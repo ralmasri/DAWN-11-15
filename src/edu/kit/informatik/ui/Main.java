@@ -1,10 +1,12 @@
 package edu.kit.informatik.ui;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import edu.kit.informatik.Terminal;
 import edu.kit.informatik.commands.PlaceCommand;
 import edu.kit.informatik.commands.MoveCommand;
 import edu.kit.informatik.commands.PrintCommand;
@@ -29,6 +31,7 @@ public class Main {
     /** Commands that don't have any parameters. */
     private static final Collection<String> NO_PARAMETER_COMMANDS = new ArrayList<>(
             Arrays.asList("reset", "show-result", "print"));
+    
     /** The command used to terminate the program. */
     private static final String QUIT_COMMAND = "quit";
 
@@ -36,11 +39,13 @@ public class Main {
      * Main method to run the program.
      * 
      * @param args Arguments.
+     * @throws IOException 
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         final DawnGame gameExecutor = new DawnGame();
         final Collection<CommandInterface> commands = initializeAllCommands(gameExecutor);
-        String input = Terminal.readLine();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String input = br.readLine();
         while (!input.equals(QUIT_COMMAND)) {
             int numberofSpaces = input.length() - input.replaceAll(" ", "").length();
             try {
@@ -59,11 +64,11 @@ public class Main {
                         .findAny()
                         .orElseThrow(() -> new InvalidInputException(StringList.COMMAND_DOESNT_EXIST.toString()));
                 final String parameters = getParameters(inputArray, command);
-                Terminal.printLine(command.run(parameters));
+                System.out.println(command.run(parameters));
             } catch (GameMechanicException | InvalidInputException exception) {
-                Terminal.printError(exception.getMessage());
+                System.out.println("Error, " + exception.getMessage());
             }
-            input = Terminal.readLine();
+            input = br.readLine();
         }
 
     }
