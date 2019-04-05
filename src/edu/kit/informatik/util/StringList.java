@@ -37,7 +37,7 @@ public enum StringList {
     /**
      * The regex of possible coordinate inputs.
      */
-    COORDINATE_REGEX("([0-9]|10)(;)([0-9]|[1][1-4])"),
+    COORDINATE_REGEX("([0-9]|10)(;)([0-9]|[1][0-4])"),
     
     /**
      * The regex of possible m-components for the place command.
